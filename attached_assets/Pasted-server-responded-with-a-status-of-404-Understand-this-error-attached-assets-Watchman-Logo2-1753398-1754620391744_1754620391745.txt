@@ -1,0 +1,54 @@
+server responded with a status of 404 ()Understand this error
+attached_assets/Watchman_Logo2_1753398451354.png:1  Failed to load resource: the server responded with a status of 404 ()Understand this error
+attached_assets/Watchman_Logo2_1753397747533.png:1  Failed to load resource: the server responded with a status of 404 ()Understand this error
+attached_assets/Watchman_Logo2_1753398543943.png:1  Failed to load resource: the server responded with a status of 404 ()Understand this error
+13Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.Understand this error
+framework-00bbbf3f19655d2d.js:1 Unrecognized feature: 'ambient-light-sensor'.
+_ @ framework-00bbbf3f19655d2d.js:1Understand this warning
+framework-00bbbf3f19655d2d.js:1 Unrecognized feature: 'battery'.
+_ @ framework-00bbbf3f19655d2d.js:1Understand this warning
+framework-00bbbf3f19655d2d.js:1 Unrecognized feature: 'execution-while-not-rendered'.
+_ @ framework-00bbbf3f19655d2d.js:1Understand this warning
+framework-00bbbf3f19655d2d.js:1 Unrecognized feature: 'execution-while-out-of-viewport'.
+_ @ framework-00bbbf3f19655d2d.js:1Understand this warning
+framework-00bbbf3f19655d2d.js:1 Unrecognized feature: 'layout-animations'.
+_ @ framework-00bbbf3f19655d2d.js:1Understand this warning
+framework-00bbbf3f19655d2d.js:1 Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-00bbbf3f19655d2d.js:1Understand this warning
+framework-00bbbf3f19655d2d.js:1 Unrecognized feature: 'navigation-override'.
+_ @ framework-00bbbf3f19655d2d.js:1Understand this warning
+framework-00bbbf3f19655d2d.js:1 Unrecognized feature: 'oversized-images'.
+_ @ framework-00bbbf3f19655d2d.js:1Understand this warning
+framework-00bbbf3f19655d2d.js:1 Unrecognized feature: 'publickey-credentials'.
+_ @ framework-00bbbf3f19655d2d.js:1Understand this warning
+framework-00bbbf3f19655d2d.js:1 Unrecognized feature: 'speaker-selection'.
+_ @ framework-00bbbf3f19655d2d.js:1Understand this warning
+framework-00bbbf3f19655d2d.js:1 Unrecognized feature: 'unoptimized-images'.
+_ @ framework-00bbbf3f19655d2d.js:1Understand this warning
+framework-00bbbf3f19655d2d.js:1 Unrecognized feature: 'unsized-media'.
+_ @ framework-00bbbf3f19655d2d.js:1Understand this warning
+framework-00bbbf3f19655d2d.js:1 Unrecognized feature: 'pointer-lock'.
+_ @ framework-00bbbf3f19655d2d.js:1Understand this warning
+framework-00bbbf3f19655d2d.js:1 Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-00bbbf3f19655d2d.js:1Understand this warning
+framework-00bbbf3f19655d2d.js:1 Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-00bbbf3f19655d2d.js:1Understand this warning
+/graphql:1  Failed to load resource: the server responded with a status of 520 ()Understand this error
+workspace_iframe.html:32 Unrecognized feature: 'ambient-light-sensor'.Understand this warning
+workspace_iframe.html:32 Unrecognized feature: 'battery'.Understand this warning
+workspace_iframe.html:32 Unrecognized feature: 'execution-while-not-rendered'.Understand this warning
+workspace_iframe.html:32 Unrecognized feature: 'execution-while-out-of-viewport'.Understand this warning
+workspace_iframe.html:32 Unrecognized feature: 'layout-animations'.Understand this warning
+workspace_iframe.html:32 Unrecognized feature: 'legacy-image-formats'.Understand this warning
+workspace_iframe.html:32 Unrecognized feature: 'navigation-override'.Understand this warning
+workspace_iframe.html:32 Unrecognized feature: 'oversized-images'.Understand this warning
+workspace_iframe.html:32 Unrecognized feature: 'publickey-credentials'.Understand this warning
+workspace_iframe.html:32 Unrecognized feature: 'speaker-selection'.Understand this warning
+workspace_iframe.html:32 Unrecognized feature: 'unoptimized-images'.Understand this warning
+workspace_iframe.html:32 Unrecognized feature: 'unsized-media'.Understand this warning
+workspace_iframe.html:32 Allow attribute will take precedence over 'allowfullscreen'.Understand this warning
+workspace_iframe.html:32 Allow attribute will take precedence over 'allowpaymentrequest'.Understand this warning
+159a2073-73b0-4c84-a5ba-972738ad2c1b-00-3hpmc8f57nvmv.kirk.replit.dev/api/auth/me:1  Failed to load resource: the server responded with a status of 403 (Forbidden)Understand this error
+Console.js:61 TypeError: window.paypal.createInstance is not a function
+    at initPayPal (PayPalButton.tsx:107:56)
+    at async loadPayPalSDK (PayPalButton.tsx:91:11)

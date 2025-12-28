@@ -1,0 +1,49 @@
+Current section found: Object
+SectionContentPage.tsx:68 ================================
+/api/trainings/5/progress:1  Failed to load resource: the server responded with a status of 500 (Internal Server Error)Understand this error
+SectionContentPage.tsx:52 === SectionContentPage Debug ===
+SectionContentPage.tsx:53 URL Params: Object
+SectionContentPage.tsx:54 Parsed IDs: Object
+SectionContentPage.tsx:59 Content loading state: Object
+SectionContentPage.tsx:60 Raw content: Object
+SectionContentPage.tsx:61 Available chapters: Array(4)
+SectionContentPage.tsx:66 Current chapter found: Object
+SectionContentPage.tsx:67 Current section found: Object
+SectionContentPage.tsx:68 ================================
+SectionContentPage.tsx:52 === SectionContentPage Debug ===
+SectionContentPage.tsx:53 URL Params: Object
+SectionContentPage.tsx:54 Parsed IDs: Object
+SectionContentPage.tsx:59 Content loading state: Object
+SectionContentPage.tsx:60 Raw content: Object
+SectionContentPage.tsx:61 Available chapters: Array(4)
+SectionContentPage.tsx:66 Current chapter found: Object
+SectionContentPage.tsx:67 Current section found: Object
+SectionContentPage.tsx:68 ================================
+SectionContentPage.tsx:52 === SectionContentPage Debug ===
+SectionContentPage.tsx:53 URL Params: Object
+SectionContentPage.tsx:54 Parsed IDs: Object
+SectionContentPage.tsx:59 Content loading state: Object
+SectionContentPage.tsx:60 Raw content: Object
+SectionContentPage.tsx:61 Available chapters: Array(4)
+SectionContentPage.tsx:66 Current chapter found: Object
+SectionContentPage.tsx:67 Current section found: Object
+SectionContentPage.tsx:68 ================================
+SectionContentPage.tsx:52 === SectionContentPage Debug ===
+SectionContentPage.tsx:53 URL Params: Object
+SectionContentPage.tsx:54 Parsed IDs: Object
+SectionContentPage.tsx:59 Content loading state: Object
+SectionContentPage.tsx:60 Raw content: Object
+SectionContentPage.tsx:61 Available chapters: Array(4)
+SectionContentPage.tsx:66 Current chapter found: Object
+SectionContentPage.tsx:67 Current section found: Object
+SectionContentPage.tsx:68 ================================
+/api/trainings/5/progress:1  Failed to load resource: the server responded with a status of 500 (Internal Server Error)Understand this error
+SectionContentPage.tsx:52 === SectionContentPage Debug ===
+SectionContentPage.tsx:53 URL Params: Object
+SectionContentPage.tsx:54 Parsed IDs: Object
+SectionContentPage.tsx:59 Content loading state: Object
+SectionContentPage.tsx:60 Raw content: Object
+SectionContentPage.tsx:61 Available chapters: Array(4)
+SectionContentPage.tsx:66 Current chapter found: Object
+SectionContentPage.tsx:67 Current section found: Object
+SectionContentPage.tsx:68 ================================

@@ -1,0 +1,127 @@
+You are a full-stack web developer helping me build a global Prayer Watchman web app to recruit, train, and activate intercessors around the world. I want you to generate a complete production-ready MERN (MongoDB, Express, React, Node.js) web application with the following key features:
+
+---
+
+# 🌍 PURPOSE:
+Build a platform where users (called Watchmen) can register, take prayer training (videos, documents, QCM), participate in global prayer projects, submit prayer requests, and partners can donate and access their contribution dashboards.
+
+---
+
+# 🔐 AUTHENTICATION
+1. Use JWT-based login/registration system for Watchmen, Partners, and Admins.
+2. Include Google login using OAuth.
+3. Roles: `watchman`, `partner`, `admin`, `regional_leader`.
+
+---
+
+# 🏠 PAGES & ROUTES:
+
+### 1. Home Page
+- Show platform vision and mission.
+- Highlight current prayer campaigns.
+- Include CTA to become a Watchman or Partner.
+- Donation button with PayPal and Stripe.
+
+### 2. Watchman Page
+- Explain what a Watchman is (add sample static content).
+- Biblical references and testimonials.
+- CTA to register/login as a Watchman.
+
+### 3. Partner Space
+- Show list of existing partners and their impact.
+- Allow partner registration.
+- After login, partners should access their dashboard:
+  - View projects supported
+  - Submit new prayer initiatives
+  - View impact reports
+  - Donation history
+
+### 4. Prayer Request
+- Public page with form to submit prayer requests (anonymous or not).
+- Display of public prayer wall (optional moderation flag).
+
+### 5. Prayer Space
+- Calendar of upcoming prayer events (global and regional).
+- Show types of prayer (intercessory, childbirth, 24h prayer, etc).
+- Display real-time impact counters (hours prayed, countries reached).
+- Filter events by region or prayer type.
+
+### 6. Training Space (CORE FEATURE)
+- List of available trainings.
+- Training = [title, description, type: video/pdf/qcm, content]
+- Require login before registering.
+- Each watchman must have:
+  - Progress tracker
+  - Video player
+  - PDF viewer
+  - Multiple-choice quizzes (QCM)
+- Auto-certificates after completion.
+- Notify regional leader upon new registration.
+
+### 7. Admin Panel
+- Upload training (pdf, video, quiz).
+- Assign regional leaders to regions.
+- Manage users, events, donations.
+- Generate reports.
+- Approve prayer requests and projects.
+
+---
+
+# 📊 DATABASE MODELS (MongoDB)
+
+- `User`: { name, email, password, role, region, registered_at }
+- `Training`: { title, description, type, file_url, quiz }
+- `Quiz`: { question, options[], correct_answer }
+- `Progress`: { user_id, training_id, completed, score }
+- `Partner`: { org_name, email, logo, donations }
+- `Project`: { title, description, region, sponsored_by, start_date }
+- `PrayerRequest`: { name, message, anonymous, category, submitted_at }
+- `Event`: { title, date, location, category }
+- `Donation`: { donor_email, amount, date, method }
+
+---
+
+# 🛠️ TECH STACK
+
+Frontend:
+- React + Tailwind CSS
+- React Router for navigation
+- Axios for API calls
+
+Backend:
+- Node.js + Express.js
+- MongoDB (Mongoose ODM)
+- Multer for file uploads (PDFs, videos)
+- JWT Auth
+
+3rd Party:
+- PayPal & Stripe for donations
+- Google OAuth for login
+- AWS S3 for training content hosting
+
+---
+
+# 🚀 DEPLOYMENT
+
+- Frontend: Vercel or Netlify
+- Backend: Render, Railway, or Heroku
+- DB: MongoDB Atlas
+
+---
+
+# ✅ STEP 1 TASK:
+
+Start by scaffolding the MERN app folder structure with:
+- `/client` for React frontend
+- `/server` for Express backend
+- `/models` for MongoDB schemas
+- `/routes` for API routes
+- `/controllers` for logic
+- Provide npm scripts for dev: `npm run dev`
+
+Then build the **authentication system first**, including:
+- Registration
+- Login (JWT)
+- Role-based access control
+
+Once done, I will prompt you for the next module (Training or Partner space).

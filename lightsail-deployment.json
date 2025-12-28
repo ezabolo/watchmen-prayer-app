@@ -1,0 +1,24 @@
+{
+  "containers": {
+    "app": {
+      "image": ":watchmen-prayer-app.latest.1",
+      "ports": {
+        "5000": "HTTP"
+      },
+      "environment": {
+        "NODE_ENV": "production",
+        "DATABASE_URL": "REPLACE_WITH_YOUR_DATABASE_URL",
+        "SENDGRID_API_KEY": "REPLACE_WITH_YOUR_SENDGRID_KEY",
+        "JWT_SECRET": "REPLACE_WITH_YOUR_JWT_SECRET"
+      }
+    }
+  },
+  "publicEndpoint": {
+    "containerName": "app",
+    "containerPort": 5000,
+    "healthCheck": {
+      "path": "/",
+      "intervalSeconds": 30
+    }
+  }
+}

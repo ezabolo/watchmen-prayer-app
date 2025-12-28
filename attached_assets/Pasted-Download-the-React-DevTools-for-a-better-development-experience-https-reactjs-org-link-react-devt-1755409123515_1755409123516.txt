@@ -1,0 +1,113 @@
+Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+SectionContentPage.tsx:67 === SectionContentPage Debug ===
+SectionContentPage.tsx:68 URL Params: Object
+SectionContentPage.tsx:69 Parsed IDs: Object
+SectionContentPage.tsx:74 Content loading state: Object
+SectionContentPage.tsx:75 Raw content: undefined
+SectionContentPage.tsx:76 Available chapters: undefined
+SectionContentPage.tsx:81 Current chapter found: NOT FOUND
+SectionContentPage.tsx:82 Current section found: NOT FOUND
+SectionContentPage.tsx:83 ================================
+SectionContentPage.tsx:67 === SectionContentPage Debug ===
+SectionContentPage.tsx:68 URL Params: Object
+SectionContentPage.tsx:69 Parsed IDs: Object
+SectionContentPage.tsx:74 Content loading state: Object
+SectionContentPage.tsx:75 Raw content: undefined
+SectionContentPage.tsx:76 Available chapters: undefined
+SectionContentPage.tsx:81 Current chapter found: NOT FOUND
+SectionContentPage.tsx:82 Current section found: NOT FOUND
+SectionContentPage.tsx:83 ================================
+SectionContentPage.tsx:67 === SectionContentPage Debug ===
+SectionContentPage.tsx:68 URL Params: Object
+SectionContentPage.tsx:69 Parsed IDs: Object
+SectionContentPage.tsx:74 Content loading state: Object
+SectionContentPage.tsx:75 Raw content: undefined
+SectionContentPage.tsx:76 Available chapters: undefined
+SectionContentPage.tsx:81 Current chapter found: NOT FOUND
+SectionContentPage.tsx:82 Current section found: NOT FOUND
+SectionContentPage.tsx:83 ================================
+SectionContentPage.tsx:67 === SectionContentPage Debug ===
+SectionContentPage.tsx:68 URL Params: Object
+SectionContentPage.tsx:69 Parsed IDs: Object
+SectionContentPage.tsx:74 Content loading state: Object
+SectionContentPage.tsx:75 Raw content: Object
+SectionContentPage.tsx:76 Available chapters: Array(4)
+SectionContentPage.tsx:81 Current chapter found: Object
+SectionContentPage.tsx:82 Current section found: Object
+SectionContentPage.tsx:83 ================================
+SectionContentPage.tsx:67 === SectionContentPage Debug ===
+SectionContentPage.tsx:68 URL Params: Object
+SectionContentPage.tsx:69 Parsed IDs: Object
+SectionContentPage.tsx:74 Content loading state: Object
+SectionContentPage.tsx:75 Raw content: Object
+SectionContentPage.tsx:76 Available chapters: Array(4)
+SectionContentPage.tsx:81 Current chapter found: Object
+SectionContentPage.tsx:82 Current section found: Object
+SectionContentPage.tsx:83 ================================
+SectionContentPage.tsx:67 === SectionContentPage Debug ===
+SectionContentPage.tsx:68 URL Params: Object
+SectionContentPage.tsx:69 Parsed IDs: Object
+SectionContentPage.tsx:74 Content loading state: Object
+SectionContentPage.tsx:75 Raw content: Object
+SectionContentPage.tsx:76 Available chapters: Array(4)
+SectionContentPage.tsx:81 Current chapter found: Object
+SectionContentPage.tsx:82 Current section found: Object
+SectionContentPage.tsx:83 ================================
+SectionContentPage.tsx:67 === SectionContentPage Debug ===
+SectionContentPage.tsx:68 URL Params: Object
+SectionContentPage.tsx:69 Parsed IDs: Object
+SectionContentPage.tsx:74 Content loading state: Object
+SectionContentPage.tsx:75 Raw content: Object
+SectionContentPage.tsx:76 Available chapters: Array(4)
+SectionContentPage.tsx:81 Current chapter found: Object
+SectionContentPage.tsx:82 Current section found: Object
+SectionContentPage.tsx:83 ================================
+/api/trainings/5/progress:1  Failed to load resource: the server responded with a status of 500 (Internal Server Error)Understand this error
+SectionContentPage.tsx:67 === SectionContentPage Debug ===
+SectionContentPage.tsx:68 URL Params: Object
+SectionContentPage.tsx:69 Parsed IDs: Object
+SectionContentPage.tsx:74 Content loading state: Object
+SectionContentPage.tsx:75 Raw content: Object
+SectionContentPage.tsx:76 Available chapters: Array(4)
+SectionContentPage.tsx:81 Current chapter found: Object
+SectionContentPage.tsx:82 Current section found: Object
+SectionContentPage.tsx:83 ================================
+SectionContentPage.tsx:67 === SectionContentPage Debug ===
+SectionContentPage.tsx:68 URL Params: Object
+SectionContentPage.tsx:69 Parsed IDs: Object
+SectionContentPage.tsx:74 Content loading state: Object
+SectionContentPage.tsx:75 Raw content: Object
+SectionContentPage.tsx:76 Available chapters: Array(4)
+SectionContentPage.tsx:81 Current chapter found: Object
+SectionContentPage.tsx:82 Current section found: Object
+SectionContentPage.tsx:83 ================================
+SectionContentPage.tsx:67 === SectionContentPage Debug ===
+SectionContentPage.tsx:68 URL Params: Object
+SectionContentPage.tsx:69 Parsed IDs: Object
+SectionContentPage.tsx:74 Content loading state: Object
+SectionContentPage.tsx:75 Raw content: Object
+SectionContentPage.tsx:76 Available chapters: Array(4)
+SectionContentPage.tsx:81 Current chapter found: Object
+SectionContentPage.tsx:82 Current section found: Object
+SectionContentPage.tsx:83 ================================
+z_EaKJYz5x0:1 Access to fetch at 'https://googleads.g.doubleclick.net/pagead/viewthroughconversion/962985656/?backend=innertube&cname=56&cver=20250812&foc_id=rcrDXK620kopfSffPxrdTA&label=followon_view&ptype=no_rmkt&random=1053782467&cv_attributed=0' (redirected from 'https://www.youtube.com/pagead/viewthroughconversion/962985656/?backend=innertube&cname=56&cver=20250812&foc_id=rcrDXK620kopfSffPxrdTA&label=followon_view&ptype=no_rmkt&random=1053782467') from origin 'https://www.youtube.com' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.Understand this error
+googleads.g.doubleclick.net/pagead/viewthroughconversion/962985656/?backend=innertube&cname=56&cver=20250812&foc_id=rcrDXK620kopfSffPxrdTA&label=followon_view&ptype=no_rmkt&random=1053782467&cv_attributed=0:1  Failed to load resource: net::ERR_FAILEDUnderstand this error
+SectionContentPage.tsx:67 === SectionContentPage Debug ===
+SectionContentPage.tsx:68 URL Params: Object
+SectionContentPage.tsx:69 Parsed IDs: Object
+SectionContentPage.tsx:74 Content loading state: Object
+SectionContentPage.tsx:75 Raw content: Object
+SectionContentPage.tsx:76 Available chapters: Array(4)
+SectionContentPage.tsx:81 Current chapter found: Object
+SectionContentPage.tsx:82 Current section found: Object
+SectionContentPage.tsx:83 ================================
+/api/trainings/5/progress:1  Failed to load resource: the server responded with a status of 500 (Internal Server Error)Understand this error
+SectionContentPage.tsx:67 === SectionContentPage Debug ===
+SectionContentPage.tsx:68 URL Params: Object
+SectionContentPage.tsx:69 Parsed IDs: Object
+SectionContentPage.tsx:74 Content loading state: Object
+SectionContentPage.tsx:75 Raw content: Object
+SectionContentPage.tsx:76 Available chapters: Array(4)
+SectionContentPage.tsx:81 Current chapter found: Object
+SectionContentPage.tsx:82 Current section found: Object
+SectionContentPage.tsx:83 ================================

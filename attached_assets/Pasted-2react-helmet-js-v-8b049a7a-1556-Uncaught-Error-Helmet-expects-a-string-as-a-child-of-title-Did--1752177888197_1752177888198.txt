@@ -1,0 +1,42 @@
+2react-helmet.js?v=8b049a7a:1556 Uncaught Error: Helmet expects a string as a child of <title>. Did you forget to wrap your children in braces? ( <title>{``}</title> ) Refer to our API for more information.
+    at HelmetWrapper.warnOnInvalidChildren (react-helmet.js?v=8b049a7a:1556:17)
+    at react-helmet.js?v=8b049a7a:1570:16
+    at chunk-QCHXOAYK.js?v=8b049a7a:750:25
+    at chunk-QCHXOAYK.js?v=8b049a7a:737:25
+    at mapIntoArray (chunk-QCHXOAYK.js?v=8b049a7a:660:31)
+    at mapIntoArray (chunk-QCHXOAYK.js?v=8b049a7a:701:31)
+    at mapChildren (chunk-QCHXOAYK.js?v=8b049a7a:736:11)
+    at Object.forEachChildren [as forEach] (chunk-QCHXOAYK.js?v=8b049a7a:749:11)
+    at HelmetWrapper.mapChildrenToProps (react-helmet.js?v=8b049a7a:1564:37)
+    at HelmetWrapper.render (react-helmet.js?v=8b049a7a:1601:25)Understand this error
+chunk-RPCDYKBN.js?v=8b049a7a:14032 The above error occurred in the <HelmetWrapper> component:
+
+    at HelmetWrapper (https://159a2073-73b0-4c84-a5ba-972738ad2c1b-00-3hpmc8f57nvmv.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/react-helmet.js?v=8b049a7a:1490:7)
+    at TrainingDetailPage (https://159a2073-73b0-4c84-a5ba-972738ad2c1b-00-3hpmc8f57nvmv.kirk.replit.dev/src/pages/TrainingDetailPage.tsx:33:18)
+    at main
+    at div
+    at RootLayout (https://159a2073-73b0-4c84-a5ba-972738ad2c1b-00-3hpmc8f57nvmv.kirk.replit.dev/src/layouts/RootLayout.tsx:19:38)
+    at component
+    at Route (https://159a2073-73b0-4c84-a5ba-972738ad2c1b-00-3hpmc8f57nvmv.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=8b049a7a:265:16)
+    at Switch (https://159a2073-73b0-4c84-a5ba-972738ad2c1b-00-3hpmc8f57nvmv.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=8b049a7a:321:17)
+    at Router (https://159a2073-73b0-4c84-a5ba-972738ad2c1b-00-3hpmc8f57nvmv.kirk.replit.dev/src/App.tsx?v=bjw2A9f01_C6C9QKjbfOC:48:20)
+    at Provider (https://159a2073-73b0-4c84-a5ba-972738ad2c1b-00-3hpmc8f57nvmv.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-OXZDJRWN.js?v=8b049a7a:38:15)
+    at TooltipProvider (https://159a2073-73b0-4c84-a5ba-972738ad2c1b-00-3hpmc8f57nvmv.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=8b049a7a:62:5)
+    at AuthProvider (https://159a2073-73b0-4c84-a5ba-972738ad2c1b-00-3hpmc8f57nvmv.kirk.replit.dev/src/contexts/AuthContext.tsx:22:32)
+    at QueryClientProvider (https://159a2073-73b0-4c84-a5ba-972738ad2c1b-00-3hpmc8f57nvmv.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=8b049a7a:2805:3)
+    at App
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+logCapturedError @ chunk-RPCDYKBN.js?v=8b049a7a:14032Understand this error
+chunk-RPCDYKBN.js?v=8b049a7a:9129 Uncaught Error: Helmet expects a string as a child of <title>. Did you forget to wrap your children in braces? ( <title>{``}</title> ) Refer to our API for more information.
+    at HelmetWrapper.warnOnInvalidChildren (react-helmet.js?v=8b049a7a:1556:17)
+    at react-helmet.js?v=8b049a7a:1570:16
+    at chunk-QCHXOAYK.js?v=8b049a7a:750:25
+    at chunk-QCHXOAYK.js?v=8b049a7a:737:25
+    at mapIntoArray (chunk-QCHXOAYK.js?v=8b049a7a:660:31)
+    at mapIntoArray (chunk-QCHXOAYK.js?v=8b049a7a:701:31)
+    at mapChildren (chunk-QCHXOAYK.js?v=8b049a7a:736:11)
+    at Object.forEachChildren [as forEach] (chunk-QCHXOAYK.js?v=8b049a7a:749:11)
+    at HelmetWrapper.mapChildrenToProps (react-helmet.js?v=8b049a7a:1564:37)
+    at HelmetWrapper.render (react-helmet.js?v=8b049a7a:1601:25)Understand this error

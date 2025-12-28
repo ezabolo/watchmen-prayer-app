@@ -1,0 +1,272 @@
+You are building a full-stack "Create Project" form for a Watchmen Prayer Movement web app (Next.js + TypeScript + Tailwind + Prisma + PostgreSQL, or equivalent stack). Produce production-quality code and UI with strong validations, accessibility, and clear UX. Include server-side endpoints, DB schema, and client components.
+
+# Product Context
+A “Project” coordinates prayer watches, trainings, outreaches, conferences, media efforts, and networks. Some projects are time-bound (campaigns) and others are ongoing. Projects may have a **final cost** and request **partner contributions** (pledges/payments) to reach a funding goal before or during execution.
+
+# Core Requirements
+1) **Form Sections**
+   A. Project Basics
+      - Project Title (required, max 120)
+      - Project Type (required; select: Prayer Watch | Training | Outreach | Media | Conference | Network/Partnership | Other)
+      - Short Summary (required, max 240)
+      - Full Description (rich text)
+      - Primary Scripture (string, e.g., "Isaiah 62:6")
+      - Focus Areas (multi-select; City, Nation, Church, Youth, Families, Government, Marketplace, Missions, Crisis/Relief)
+      - Visibility (required; Public | Members | Private)
+      - Cover Media (image/video upload or URL)
+
+   B. Timing & Schedule
+      - Start Date (required)
+      - Ongoing (boolean toggle). If true → hide End Date. If false → End Date required (must be >= Start Date).
+      - Rhythm (One-time | Weekly | Monthly | 24/7 Watch | Custom)
+      - Timezone (default from user profile)
+      - Slot Builder (conditional):
+         • If 24/7: slot length (15/30/60/120), active days (Mon–Sun), auto-generate rolling slots for next 90 days.
+         • If Weekly/Monthly: day(s) + local time window, generate slots accordingly.
+
+   C. Prayer Focus & Objectives
+      - Kingdom Objectives (1–5 bullets, required)
+      - Prayer Points (dynamic list)
+      - Target Outcomes / Faith Goals (free text; e.g., # intercessors, # completed slots)
+
+   D. Team & Roles
+      - Project Owner (auto = creator; editable if admin)
+      - Co-Leads (multi-people picker)
+      - Role Needs (checkboxes: Intercessor, Trainer, Organizer, Media Host, Greeter, Follow-Up, Counselor, Safety)
+      - Max Team Size (optional; 0 = unlimited)
+
+   E. Sign-ups & Capacity
+      - Allow Public Signup (Yes/No)
+      - Approval Mode (Auto-approve | Manual review)
+      - Capacity Total (optional; 0 = unlimited)
+      - Capacity Per Slot (if slot-based; default 5)
+      - Prerequisites (optional: text or link to training)
+
+   F. Communications
+      - Announcement Channels (Email | In-app | SMS | WhatsApp link | Livestream link)
+      - Welcome Message (templating allowed: {{first_name}}, {{project_title}}, {{slot_time}})
+      - Reminders (default 24h + 1h before slot; configurable)
+      - Prayer Report Prompt (short instruction sent after a slot to collect outcome notes)
+
+   G. Resources
+      - Attachments (PDFs, slides, guides)
+      - Links (Google Doc, YouTube, Zoom/Meet)
+      - Devotional/Guide (rich text)
+
+   H. Metrics & Testimonies
+      - Success Metrics to track (select/add custom): committed_intercessors, completed_slots, testimonies, salvations, outreach_touches, partner_churches
+      - Report Frequency (Per Slot | Daily | Weekly | End of Project)
+      - Enable Testimonies (toggle) + Moderation (toggle)
+
+   I. Safeguarding & Compliance
+      - Code of Conduct agreement (required checkbox)
+      - Minors Involved? (boolean)
+      - If yes: Safeguarding Lead (user picker) + Guardians’ Consent Document upload (required)
+      - Data consent / privacy checkbox (GDPR/CCPA)
+
+   J. **Budget & Funding (NEW – REQUIRED WHEN FINAL COST IS SET)**
+      - Has Final Cost? (toggle)
+        • If false: hide all budget fields.
+        • If true: show fields below.
+      - Final Project Cost (money; currency select; required when toggle is true)
+      - Internal Funds Committed (money; optional, default 0)
+      - **Partner Contribution Model**
+         • Funding Goal (auto = Final Cost - Internal Funds, editable but cannot exceed Final Cost)
+         • Minimum Partner Contribution (money or %; optional)
+         • Contribution Type allowed: One-time and/or Recurring (monthly)
+         • Pledge Levels (repeatable rows): Label (e.g., “Bronze”), Amount (money or %), Benefits (short text)
+         • Payment Methods (Stripe, PayPal; add webhook endpoints for confirmation)
+         • Show Funding Progress (progress bar: (confirmed payments + active pledges) / Funding Goal)
+         • Publish Gate (toggle): “Require Funding Threshold to Publish?” If on, set Threshold % (e.g., 30%) and block Publish until reached (admin override allowed)
+      - Budget Breakdown (repeatable rows): Category (Venue, Media, Printing, Travel, Benevolence, Platform, Misc), Amount, Notes
+      - Donation Link (optional external URL)
+      - Financial Contact (name/email; required if Has Final Cost)
+
+   K. Review & Publish
+      - Status (Draft | Submit for Review | Publish Now | Schedule Publish datetime)
+      - Preview page (public view)
+      - Save Draft at any step
+
+2) **Validation Rules**
+   - Required: Title, Type, Summary, Start Date, Timezone, Visibility, Code of Conduct.
+   - Ongoing toggle true → End Date disabled; else End Date >= Start Date.
+   - If Rhythm = 24/7 → Slot length and at least one active day required.
+   - If Approval Mode = Manual → Require Owner or at least one Co-Lead with reachable email.
+   - If Minors Involved → Consent doc and Safeguarding Lead required.
+   - **Budget**
+     • If Has Final Cost = true → Final Project Cost required (>0).
+     • Internal Funds ≥ 0 and ≤ Final Project Cost.
+     • Funding Goal = max(0, Final Project Cost - Internal Funds).
+     • If Publish Gate enabled → Threshold between 1–100 (%).
+     • Pledge Level Amounts must be ≥ Minimum Contribution if set.
+     • Currency validated (ISO 4217).
+   - URLs valid; uploads under 25MB/file; accepted types: pdf, docx, pptx, jpg, png, mp4.
+
+3) **Accessibility & UX**
+   - WCAG AA: labeled fields, aria-live for error summaries, keyboard navigable.
+   - Stepper navigation: Basics → Schedule → Focus → Team & Sign-ups → Comms → Resources → Metrics → Safeguarding → Budget & Funding → Review.
+   - Sticky “Save Draft” and “Next/Back” controls.
+   - Inline helper text (short) + tooltips (for advanced concepts).
+   - Empty states with examples (e.g., sample Prayer Points).
+   - Display a live **Funding Progress** card when Has Final Cost = true.
+
+4) **Data Models (Prisma or SQL)**
+   - projects(id, title, type, summary, description, primary_scripture, visibility, cover_url,
+              start_date, end_date, ongoing, timezone, rhythm, slot_length_minutes,
+              owner_id, status, created_at, updated_at)
+   - project_focus_areas(project_id, focus_area)
+   - project_objectives(id, project_id, text)
+   - project_prayer_points(id, project_id, text)
+   - project_slots(id, project_id, start_at, end_at, capacity, created_by)
+   - project_slot_signups(id, slot_id, user_id, status[pending|approved|declined], notes, created_at)
+   - project_team_roles(id, project_id, user_id, role)
+   - project_comms_settings(project_id, channels_json, welcome_message, reminders_json, report_prompt)
+   - project_metrics(project_id, track_json, report_frequency, enable_testimonies, moderate_testimonies)
+   - project_resources(id, project_id, type[file|link], label, url_or_path)
+   - project_safeguarding(project_id, minors_involved, code_of_conduct_agreed, safeguarding_lead_id, consent_docs_json)
+   - **project_budget(project_id, has_final_cost, final_cost_cents, currency, internal_funds_cents,
+                      funding_goal_cents, min_contribution_cents, allow_recurring, publish_gate_enabled,
+                      publish_gate_threshold_pct, donation_link, financial_contact_name, financial_contact_email)**
+   - **project_budget_breakdown(id, project_id, category, amount_cents, notes)**
+   - **project_pledge_levels(id, project_id, label, amount_cents, amount_pct, benefits)**
+   - **partner_contributions(id, project_id, user_id, amount_cents, currency, is_recurring, interval_months,
+                             status[pending|confirmed|failed|canceled], provider[stripe|paypal|manual],
+                             provider_payment_id, created_at, confirmed_at)**
+   - **webhooks(id, project_id, provider, event_type, payload_json, received_at)**
+
+   Notes:
+   - Store money in integer cents; keep currency on every monetary row.
+   - Maintain FK constraints and cascading deletes where appropriate.
+   - Add indices: project_slots.start_at, partner_contributions.status, project_budget.project_id (unique).
+
+5) **API Endpoints (REST or tRPC)**
+   - POST /api/projects (create)
+   - PUT  /api/projects/:id (update)
+   - GET  /api/projects/:id (read)
+   - POST /api/projects/:id/generate-slots (with rhythm rules)
+   - POST /api/projects/:id/preview (returns read-only projection)
+   - POST /api/projects/:id/publish (enforces Publish Gate threshold unless admin override)
+   - POST /api/projects/:id/contributions (create pledge/payment intent)
+   - POST /api/webhooks/stripe ; /api/webhooks/paypal (verify, update contributions)
+   - GET  /api/projects/:id/funding-progress (sum confirmed + active recurring; return progress %)
+
+6) **Server Logic & Rules**
+   - Role-based access: owner/admin can publish/delete; editors can update; members read-only.
+   - Slot generation is idempotent per (project_id, date range, rhythm).
+   - Publish endpoint:
+     • If project_budget.publish_gate_enabled = true → enforce progress >= threshold.
+     • Allow admin override with audit log entry.
+   - Webhooks validate signatures; set contributions.status to confirmed on success.
+   - Recalculate funding progress on every contribution confirmation or budget change.
+
+7) **Client UI (React + Tailwind)**
+   - Use a multi-step form with a progress indicator.
+   - For money fields, show currency select + formatted input; store integer cents.
+   - “Funding Progress” card (when Has Final Cost):
+     • Progress bar, % funded, Final Cost, Internal Funds, Funding Goal, Confirmed Contributions, Recurring Monthly total.
+   - Pledge Levels: small table with add/remove rows.
+   - Budget Breakdown: table with total auto-sum; validate total ≈ Final Cost (warn if off > 5%).
+   - Publish Gate: switch with threshold slider (1–100%).
+   - Error summary at top on submit; field-level messages.
+   - Confirm dialogs on destructive actions.
+
+8) **Validation & Testing**
+   - Zod schema (or equivalent) shared by client/server.
+   - Unit tests for funding math (goal, thresholds).
+   - Integration tests for webhooks.
+   - E2E test: create project with budget, add contribution (mock provider), confirm, attempt publish before/after threshold.
+
+9) **Seed & Demo**
+   - Provide a seed script that creates:
+     • 1 ongoing 24/7 prayer project without budget.
+     • 1 campaign project with final cost, pledge levels, 30% publish gate, and sample contributions to show progress.
+
+10) **Example JSON Payload (what the form submits)**
+   {
+     "title": "City Gate 24/7 Watch",
+     "type": "Prayer Watch",
+     "summary": "Round-the-clock intercession for our city.",
+     "description": "<p>Standing on Isaiah 62:6…</p>",
+     "primary_scripture": "Isaiah 62:6",
+     "focus_areas": ["City","Government"],
+     "visibility": "Public",
+     "media": { "cover_url": "https://cdn.example.com/cover.jpg" },
+     "schedule": {
+       "start_date": "2025-09-01",
+       "end_date": null,
+       "ongoing": true,
+       "timezone": "America/New_York",
+       "rhythm": "24/7 Watch",
+       "slot_length_minutes": 60,
+       "active_days": ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]
+     },
+     "objectives": ["Mobilize 200 intercessors","Cover leaders in prayer"],
+     "prayer_points": ["Peace & justice","Wisdom for leaders (1 Tim 2:1-2)"],
+     "team": {
+       "owner_id": "usr_123",
+       "colead_ids": ["usr_456"],
+       "role_needs": ["Intercessor","Organizer"],
+       "max_team_size": 0
+     },
+     "signup": {
+       "allow_public_signup": true,
+       "approval_mode": "Auto",
+       "capacity_total": 0,
+       "capacity_per_slot": 5
+     },
+     "comms": {
+       "channels": ["Email","InApp"],
+       "welcome_message": "Thank you for joining {{project_title}}.",
+       "reminders": ["24h","1h"],
+       "report_prompt": "Share what you sensed in prayer."
+     },
+     "resources": {
+       "attachments": [],
+       "links": ["https://docs.example.com/guide"]
+     },
+     "metrics": {
+       "track": ["committed_intercessors","completed_slots","testimonies"],
+       "report_frequency": "Daily",
+       "enable_testimonies": true,
+       "moderate_testimonies": true
+     },
+     "safeguarding": {
+       "code_of_conduct_agreed": true,
+       "minors_involved": false,
+       "safeguarding_lead_id": null,
+       "consent_docs": []
+     },
+     "budget": {
+       "has_final_cost": true,
+       "final_cost_cents": 5000000,
+       "currency": "USD",
+       "internal_funds_cents": 500000,
+       "funding_goal_cents": 4500000,
+       "min_contribution_cents": 2500,
+       "allow_recurring": true,
+       "publish_gate_enabled": true,
+       "publish_gate_threshold_pct": 30,
+       "donation_link": "https://give.example.com/project",
+       "financial_contact_name": "Jane Doe",
+       "financial_contact_email": "finance@example.com",
+       "pledge_levels": [
+         { "label": "Bronze", "amount_cents": 5000, "amount_pct": null, "benefits": "Updates & prayer badge" },
+         { "label": "Silver", "amount_cents": 25000, "amount_pct": null, "benefits": "Shout-out + newsletter" }
+       ],
+       "breakdown": [
+         { "category": "Venue", "amount_cents": 1000000, "notes": "" },
+         { "category": "Media", "amount_cents": 500000, "notes": "" }
+       ]
+     },
+     "status": "Draft"
+   }
+
+# Deliverables
+- Complete UI (React/Next + Tailwind) with multi-step form and validations.
+- API routes and server logic with funding gate enforcement.
+- Prisma schema + migrations.
+- Webhook handlers for Stripe/PayPal with signature verification.
+- Unit/integration/E2E tests as described.
+- Seed script and minimal README with run instructions.
+
+Build clean, documented code with strong types, and ship the full working form.
