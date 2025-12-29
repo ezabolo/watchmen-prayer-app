@@ -344,12 +344,75 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getProjectsByPartner(partnerId: number): Promise<Project[]> {
-    return await db.select().from(projects).where(eq(projects.sponsored_by, partnerId));
+    return await db.select().from(projects).where(eq(projects.owner_id, partnerId));
   }
 
   async createProject(projectData: InsertProject): Promise<Project> {
     const [project] = await db.insert(projects).values(projectData).returning();
     return project;
+  }
+
+  async getProjectWithParticipants(id: number): Promise<(Project & { participants: ProjectParticipant[] }) | undefined> {
+    const [project] = await db.select().from(projects).where(eq(projects.id, id));
+    if (!project) return undefined;
+
+    const participants = await db.select({
+      id: projectParticipants.id,
+      project_id: projectParticipants.project_id,
+      user_id: projectParticipants.user_id,
+      role: projectParticipants.role,
+      status: projectParticipants.status,
+      notes: projectParticipants.notes,
+      joined_at: projectParticipants.joined_at,
+    })
+    .from(projectParticipants)
+    .where(eq(projectParticipants.project_id, id));
+
+    return { ...project, participants };
+  }
+
+  async updateProject(id: number, projectData: Partial<InsertProject>): Promise<Project | undefined> {
+    const [project] = await db.update(projects)
+      .set({ ...projectData, updated_at: new Date() })
+      .where(eq(projects.id, id))
+      .returning();
+    return project || undefined;
+  }
+
+  async deleteProject(id: number): Promise<boolean> {
+    const result = await db.delete(projects).where(eq(projects.id, id));
+    return result.rowCount ? result.rowCount > 0 : false;
+  }
+
+  async getProjectParticipants(projectId: number): Promise<ProjectParticipant[]> {
+    return await db.select()
+      .from(projectParticipants)
+      .where(eq(projectParticipants.project_id, projectId));
+  }
+
+  async addProjectParticipant(participantData: InsertProjectParticipant): Promise<ProjectParticipant> {
+    const [participant] = await db.insert(projectParticipants).values({
+      ...participantData,
+      joined_at: new Date(),
+    }).returning();
+    return participant;
+  }
+
+  async updateProjectParticipant(id: number, updates: Partial<InsertProjectParticipant>): Promise<ProjectParticipant | undefined> {
+    const [participant] = await db.update(projectParticipants)
+      .set(updates)
+      .where(eq(projectParticipants.id, id))
+      .returning();
+    return participant || undefined;
+  }
+
+  async removeProjectParticipant(projectId: number, userId: number): Promise<boolean> {
+    const result = await db.delete(projectParticipants)
+      .where(and(
+        eq(projectParticipants.project_id, projectId),
+        eq(projectParticipants.user_id, userId)
+      ));
+    return result.rowCount ? result.rowCount > 0 : false;
   }
 
   // Prayer Request operations
@@ -575,113 +638,6 @@ export class DatabaseStorage implements IStorage {
     }
     
     return await db.select().from(subscribers).where(eq(subscribers.verified, true));
-  }
-
-  // Project operations implementation
-  async getProject(id: number): Promise<Project | undefined> {
-    const [project] = await db.select().from(projects).where(eq(projects.id, id));
-    return project || undefined;
-  }
-
-  async getProjects(): Promise<Project[]> {
-    return await db.select().from(projects).orderBy(desc(projects.created_at));
-  }
-
-  async getProjectsByPartner(partnerId: number): Promise<Project[]> {
-    return await db.select().from(projects)
-      .where(eq(projects.sponsored_by, partnerId))
-      .orderBy(desc(projects.created_at));
-  }
-
-  async getProjectWithParticipants(id: number): Promise<(Project & { participants: ProjectParticipant[] }) | undefined> {
-    const [project] = await db.select().from(projects).where(eq(projects.id, id));
-    if (!project) return undefined;
-
-    const participants = await db.select({
-      id: projectParticipants.id,
-      project_id: projectParticipants.project_id,
-      user_id: projectParticipants.user_id,
-      role: projectParticipants.role,
-      status: projectParticipants.status,
-      notes: projectParticipants.notes,
-      joined_at: projectParticipants.joined_at,
-      user: {
-        name: users.name,
-        email: users.email,
-      }
-    })
-    .from(projectParticipants)
-    .leftJoin(users, eq(projectParticipants.user_id, users.id))
-    .where(eq(projectParticipants.project_id, id));
-
-    return { ...project, participants };
-  }
-
-  async createProject(projectData: InsertProject): Promise<Project> {
-    const [project] = await db.insert(projects).values({
-      ...projectData,
-      created_at: new Date(),
-      updated_at: new Date(),
-    }).returning();
-    return project;
-  }
-
-  async updateProject(id: number, projectData: Partial<InsertProject>): Promise<Project | undefined> {
-    const [project] = await db.update(projects)
-      .set({ ...projectData, updated_at: new Date() })
-      .where(eq(projects.id, id))
-      .returning();
-    return project || undefined;
-  }
-
-  async deleteProject(id: number): Promise<boolean> {
-    const result = await db.delete(projects).where(eq(projects.id, id));
-    return result.rowCount ? result.rowCount > 0 : false;
-  }
-
-  // Project Participants operations
-  async getProjectParticipants(projectId: number): Promise<ProjectParticipant[]> {
-    return await db.select({
-      id: projectParticipants.id,
-      project_id: projectParticipants.project_id,
-      user_id: projectParticipants.user_id,
-      role: projectParticipants.role,
-      status: projectParticipants.status,
-      notes: projectParticipants.notes,
-      joined_at: projectParticipants.joined_at,
-      user: {
-        name: users.name,
-        email: users.email,
-      }
-    })
-    .from(projectParticipants)
-    .leftJoin(users, eq(projectParticipants.user_id, users.id))
-    .where(eq(projectParticipants.project_id, projectId));
-  }
-
-  async addProjectParticipant(participantData: InsertProjectParticipant): Promise<ProjectParticipant> {
-    const [participant] = await db.insert(projectParticipants).values({
-      ...participantData,
-      joined_at: new Date(),
-    }).returning();
-    return participant;
-  }
-
-  async updateProjectParticipant(id: number, updates: Partial<InsertProjectParticipant>): Promise<ProjectParticipant | undefined> {
-    const [participant] = await db.update(projectParticipants)
-      .set(updates)
-      .where(eq(projectParticipants.id, id))
-      .returning();
-    return participant || undefined;
-  }
-
-  async removeProjectParticipant(projectId: number, userId: number): Promise<boolean> {
-    const result = await db.delete(projectParticipants)
-      .where(and(
-        eq(projectParticipants.project_id, projectId),
-        eq(projectParticipants.user_id, userId)
-      ));
-    return result.rowCount ? result.rowCount > 0 : false;
   }
 }
 
