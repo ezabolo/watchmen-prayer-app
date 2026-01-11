@@ -32,6 +32,8 @@ import { Strategy as LocalStrategy } from "passport-local";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { Strategy as FacebookStrategy } from "passport-facebook";
 import MemoryStore from "memorystore";
+import connectPgSimple from "connect-pg-simple";
+import { pool } from "./db";
 import crypto from "crypto";
 import speakeasy from "speakeasy";
 import QRCode from "qrcode";
@@ -62,17 +64,27 @@ const upload = multer({
 
 export async function registerRoutes(app: Express): Promise<Server> {
   const MemoryStoreSession = MemoryStore(session);
+  const PgSession = connectPgSimple(session);
+  
+  // Use PostgreSQL session store in production for persistence across restarts
+  const sessionStore = process.env.NODE_ENV === "production" 
+    ? new PgSession({
+        pool: pool as any,
+        tableName: 'session',
+        createTableIfMissing: true
+      })
+    : new MemoryStoreSession({
+        checkPeriod: 86400000
+      });
   
   app.use(session({
     secret: process.env.SESSION_SECRET || "default-secret-change-in-production",
     resave: false,
     saveUninitialized: false,
-    store: new MemoryStoreSession({
-      checkPeriod: 86400000
-    }),
+    store: sessionStore,
     cookie: {
       secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "lax" : "lax",
+      sameSite: "lax",
       maxAge: 24 * 60 * 60 * 1000
     }
   }));
