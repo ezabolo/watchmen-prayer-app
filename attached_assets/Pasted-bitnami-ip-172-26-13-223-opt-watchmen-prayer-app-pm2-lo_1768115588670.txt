@@ -1,0 +1,28 @@
+bitnami@ip-172-26-13-223:/opt/watchmen-prayer-app$ pm2 logs watchmen-prayer-app
+[TAILING] Tailing last 15 lines for [watchmen-prayer-app] process (change the value with --lines option)
+/home/bitnami/.pm2/logs/watchmen-prayer-app-error-0.log last 15 lines:
+0|watchmen | You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+0|watchmen | Error: DATABASE_URL must be set. Did you forget to provision a database?
+0|watchmen |     at file:///opt/watchmen-prayer-app/dist/index.js:422:9
+0|watchmen |     at ModuleJob.run (node:internal/modules/esm/module_job:343:25)
+0|watchmen |     at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+0|watchmen |     at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:647:26)
+
+/home/bitnami/.pm2/logs/watchmen-prayer-app-out-0.log last 15 lines:
+0|watchmen | 6:45:47 AM [express] GET /api/swagger.json 200 in 1ms
+0|watchmen | 6:45:48 AM [express] GET /api/swagger.json 200 in 2ms
+0|watchmen | 6:47:20 AM [express] GET /api/cart 401 in 1ms :: {"message":"Unauthorized"}
+0|watchmen | 6:50:27 AM [express] POST /api/create-payment-intent 401 in 0ms :: {"message":"Unauthorized"}
+0|watchmen | 6:50:44 AM [express] POST /api/paypal/order 200 in 1ms
+0|watchmen | 7:00:32 AM [express] POST /api/create-payment-intent 401 in 1ms :: {"message":"Unauthorized"}
+0|watchmen | 7:00:58 AM [express] POST /api/create-payment-intent 401 in 1ms :: {"message":"Unauthorized"}
+0|watchmen | 7:01:01 AM [express] POST /api/create-payment-intent 401 in 1ms :: {"message":"Unauthorized"}
+0|watchmen | 7:04:08 AM [express] POST /api/create-payment-intent 401 in 1ms :: {"message":"Unauthorized"}
+0|watchmen | 7:04:11 AM [express] POST /api/paypal/order 200 in 1ms
+0|watchmen | 7:04:43 AM [express] POST /api/create-payment-intent 401 in 1ms :: {"message":"Unauthorized"}
+0|watchmen | 7:07:02 AM [express] GET /api/cart 401 in 1ms :: {"message":"Unauthorized"}
+0|watchmen | 7:07:04 AM [express] GET /api/cart 401 in 0ms :: {"message":"Unauthorized"}
+0|watchmen | 7:07:19 AM [express] GET /api/cart 401 in 1ms :: {"message":"Unauthorized"}
+0|watchmen | 7:12:31 AM [express] serving on port 5000
+
+
