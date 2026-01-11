@@ -1,0 +1,35 @@
+0|watchmen | 8:01:59 AM [express] POST /api/paypal/order 200 in 2ms
+0|watchmen | 8:02:07 AM [express] POST /api/create-payment-intent 401 in 1ms :: {"message":"Unauthorized"}
+0|watchmen | 8:02:11 AM [express] POST /api/create-payment-intent 401 in 1ms :: {"message":"Unauthorized"}
+0|watchmen | 8:04:57 AM [express] POST /api/create-payment-intent 401 in 1ms :: {"message":"Unauthorized"}
+0|watchmen | 8:05:00 AM [express] POST /api/paypal/order 200 in 2ms
+0|watchmen | 8:06:31 AM [express] POST /api 200 in 1ms
+0|watchmen | 8:30:14 AM [express] serving on port 5000
+
+0|watchmen-prayer-app  | 8:30:43 AM [express] POST /api/create-payment-intent 401 in 2ms :: {"message":"Unauthorized"}
+0|watchmen-prayer-app  | 8:30:50 AM [express] POST /api/paypal/order 200 in 2ms
+0|watchmen-prayer-app  | 8:30:57 AM [express] POST /api/paypal/order 200 in 2ms
+0|watchmen-prayer-app  | 8:31:22 AM [express] GET /api/auth/google 500 in 1ms :: {"message":"Unknown authentication strategy …
+0|watchmen-prayer-app  | Error: Unknown authentication strategy "google"
+0|watchmen-prayer-app  |     at attempt (/opt/watchmen-prayer-app/node_modules/passport/lib/middleware/authenticate.js:193:39)
+0|watchmen-prayer-app  |     at authenticate (/opt/watchmen-prayer-app/node_modules/passport/lib/middleware/authenticate.js:379:7)
+0|watchmen-prayer-app  |     at Layer.handle [as handle_request] (/opt/watchmen-prayer-app/node_modules/express/lib/router/layer.js:95:5)
+0|watchmen-prayer-app  |     at next (/opt/watchmen-prayer-app/node_modules/express/lib/router/route.js:149:13)
+0|watchmen-prayer-app  |     at Route.dispatch (/opt/watchmen-prayer-app/node_modules/express/lib/router/route.js:119:3)
+0|watchmen-prayer-app  |     at Layer.handle [as handle_request] (/opt/watchmen-prayer-app/node_modules/express/lib/router/layer.js:95:5)
+0|watchmen-prayer-app  |     at /opt/watchmen-prayer-app/node_modules/express/lib/router/index.js:284:15
+0|watchmen-prayer-app  |     at Function.process_params (/opt/watchmen-prayer-app/node_modules/express/lib/router/index.js:346:12)
+0|watchmen-prayer-app  |     at next (/opt/watchmen-prayer-app/node_modules/express/lib/router/index.js:280:10)
+0|watchmen-prayer-app  |     at strategy.pass (/opt/watchmen-prayer-app/node_modules/passport/lib/middleware/authenticate.js:355:9)
+0|watchmen-prayer-app  | 8:31:28 AM [express] GET /api/auth/google 500 in 2ms :: {"message":"Unknown authentication strategy …
+0|watchmen-prayer-app  | Error: Unknown authentication strategy "google"
+0|watchmen-prayer-app  |     at attempt (/opt/watchmen-prayer-app/node_modules/passport/lib/middleware/authenticate.js:193:39)
+0|watchmen-prayer-app  |     at authenticate (/opt/watchmen-prayer-app/node_modules/passport/lib/middleware/authenticate.js:379:7)
+0|watchmen-prayer-app  |     at Layer.handle [as handle_request] (/opt/watchmen-prayer-app/node_modules/express/lib/router/layer.js:95:5)
+0|watchmen-prayer-app  |     at next (/opt/watchmen-prayer-app/node_modules/express/lib/router/route.js:149:13)
+0|watchmen-prayer-app  |     at Route.dispatch (/opt/watchmen-prayer-app/node_modules/express/lib/router/route.js:119:3)
+0|watchmen-prayer-app  |     at Layer.handle [as handle_request] (/opt/watchmen-prayer-app/node_modules/express/lib/router/layer.js:95:5)
+0|watchmen-prayer-app  |     at /opt/watchmen-prayer-app/node_modules/express/lib/router/index.js:284:15
+0|watchmen-prayer-app  |     at Function.process_params (/opt/watchmen-prayer-app/node_modules/express/lib/router/index.js:346:12)
+0|watchmen-prayer-app  |     at next (/opt/watchmen-prayer-app/node_modules/express/lib/router/index.js:280:10)
+0|watchmen-prayer-app  |     at strategy.pass (/opt/watchmen-prayer-app/node_modules/passport/lib/middleware/authenticate.js:355:9)
