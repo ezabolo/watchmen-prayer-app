@@ -82,7 +82,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     ];
   })();
   
-  const userInitials = user.name
+  const userInitials = (user.name || 'User')
     .split(' ')
     .map(name => name[0])
     .join('')
@@ -135,7 +135,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               <AvatarFallback>{userInitials}</AvatarFallback>
             </Avatar>
             <div className="ml-3">
-              <p className="text-sm font-medium text-gray-700">{user.name}</p>
+              <p className="text-sm font-medium text-gray-700">{user.name || 'User'}</p>
               <p className="text-xs text-gray-500">{roleLabel}</p>
             </div>
           </div>
