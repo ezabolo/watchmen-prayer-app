@@ -23,23 +23,19 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const { data: user, isLoading, refetch } = useQuery({
     queryKey: ['/api/auth/me'],
     retry: false,
-    enabled: !!localStorage.getItem('token'),
   });
 
   const logout = async () => {
     console.log('Logout function called');
     try {
-      // Call logout endpoint
-      const token = localStorage.getItem('token');
-      if (token) {
-        await fetch('/api/auth/logout', { 
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          }
-        });
-      }
+      // Call logout endpoint (session-based)
+      await fetch('/api/auth/logout', { 
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
     } catch (error) {
       console.error('Logout error:', error);
     } finally {
