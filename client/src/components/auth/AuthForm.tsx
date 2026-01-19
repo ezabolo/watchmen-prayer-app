@@ -79,11 +79,45 @@ export default function AuthForm({ mode }: AuthFormProps) {
         });
       }
     } catch (error: any) {
-      toast({
-        title: mode === "login" ? "Login failed" : "Registration failed",
-        description: error.message || "Please try again",
-        variant: "destructive",
-      });
+      const errorMessage = error.message || "";
+      
+      if (mode === "login") {
+        // Friendly login error messages
+        if (errorMessage.toLowerCase().includes('invalid') || errorMessage.toLowerCase().includes('password') || errorMessage.toLowerCase().includes('credentials')) {
+          toast({
+            title: "Incorrect Email or Password",
+            description: "The email or password you entered doesn't match our records. Please double-check and try again.",
+            variant: "destructive",
+          });
+        } else if (errorMessage.includes('Email not verified')) {
+          toast({
+            title: "Please Verify Your Email",
+            description: "Check your inbox for a verification link to activate your account.",
+            variant: "destructive",
+          });
+        } else {
+          toast({
+            title: "Unable to Sign In",
+            description: "Something went wrong. Please check your details and try again.",
+            variant: "destructive",
+          });
+        }
+      } else {
+        // Friendly registration error messages
+        if (errorMessage.toLowerCase().includes('already exists') || errorMessage.toLowerCase().includes('duplicate') || errorMessage.toLowerCase().includes('email')) {
+          toast({
+            title: "Email Already Registered",
+            description: "An account with this email already exists. Try signing in instead.",
+            variant: "destructive",
+          });
+        } else {
+          toast({
+            title: "Registration Unsuccessful",
+            description: "We couldn't complete your registration. Please check your details and try again.",
+            variant: "destructive",
+          });
+        }
+      }
     } finally {
       setIsLoading(false);
     }

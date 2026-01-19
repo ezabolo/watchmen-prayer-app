@@ -105,19 +105,43 @@ export default function LoginPage() {
       setLocation(returnUrl);
     },
     onError: (error: any) => {
-      const errorMessage = error.message || "Please check your credentials and try again.";
+      const errorMessage = error.message || "";
       
-      // Check if it's an email verification error
+      // Provide friendly error messages based on the error type
       if (errorMessage.includes('Email not verified')) {
         toast({
-          title: "Email Verification Required",
-          description: "Please check your email and click the verification link before logging in.",
+          title: "Please Verify Your Email",
+          description: "We sent you a verification link. Please check your inbox (and spam folder) and click the link to activate your account.",
+          variant: "destructive",
+        });
+      } else if (errorMessage.toLowerCase().includes('invalid') || errorMessage.toLowerCase().includes('password') || errorMessage.toLowerCase().includes('credentials')) {
+        toast({
+          title: "Incorrect Email or Password",
+          description: "The email or password you entered doesn't match our records. Please double-check and try again.",
+          variant: "destructive",
+        });
+      } else if (errorMessage.toLowerCase().includes('not found') || errorMessage.toLowerCase().includes('no user')) {
+        toast({
+          title: "Account Not Found",
+          description: "We couldn't find an account with that email. Would you like to create one?",
+          variant: "destructive",
+        });
+      } else if (errorMessage.toLowerCase().includes('deactivated') || errorMessage.toLowerCase().includes('disabled')) {
+        toast({
+          title: "Account Deactivated",
+          description: "Your account has been deactivated. Please contact support for assistance.",
+          variant: "destructive",
+        });
+      } else if (errorMessage.toLowerCase().includes('network') || errorMessage.toLowerCase().includes('connection')) {
+        toast({
+          title: "Connection Issue",
+          description: "We're having trouble connecting. Please check your internet connection and try again.",
           variant: "destructive",
         });
       } else {
         toast({
-          title: "Login Failed",
-          description: errorMessage,
+          title: "Unable to Sign In",
+          description: "Something went wrong. Please check your details and try again, or contact support if the problem persists.",
           variant: "destructive",
         });
       }
