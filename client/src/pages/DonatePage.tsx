@@ -7,8 +7,12 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Helmet } from "react-helmet";
 import { useToast } from "@/hooks/use-toast";
 import PayPalButton from "@/components/PayPalButton";
+import { useAuth } from "@/hooks/useAuth";
+import { Link } from "wouter";
+import { LogIn, UserPlus } from "lucide-react";
 
 export default function DonatePage() {
+  const { isAuthenticated, isLoading } = useAuth();
   const [amount, setAmount] = useState("25");
   const [customAmount, setCustomAmount] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("stripe");
@@ -90,13 +94,23 @@ export default function DonatePage() {
           throw new Error("Failed to create PayPal order");
         }
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Payment error:", error);
-      toast({
-        title: "Payment Error",
-        description: "There was an issue processing your donation. Please try again.",
-        variant: "destructive",
-      });
+      
+      // Check if it's an authentication error
+      if (error.message?.includes("401") || error.message?.includes("Unauthorized")) {
+        toast({
+          title: "Sign In Required",
+          description: "Please sign in or create an account to complete your donation.",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Payment Error",
+          description: "There was an issue processing your donation. Please try again.",
+          variant: "destructive",
+        });
+      }
     } finally {
       setIsProcessing(false);
     }
@@ -133,6 +147,39 @@ export default function DonatePage() {
                 Your donation helps us unite intercessors worldwide in prayer for the nations and advance God's kingdom through strategic prayer initiatives.
               </p>
             </div>
+
+            {/* Login Required Message */}
+            {!isLoading && !isAuthenticated && (
+              <Card className="mb-8 border-amber-200 bg-amber-50">
+                <CardContent className="pt-6">
+                  <div className="text-center space-y-4">
+                    <div className="mx-auto w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center">
+                      <LogIn className="w-8 h-8 text-amber-600" />
+                    </div>
+                    <h3 className="text-xl font-semibold text-gray-900">
+                      Please Sign In to Donate
+                    </h3>
+                    <p className="text-gray-600 max-w-md mx-auto">
+                      To ensure your donation is secure and you receive a receipt, please sign in or create an account first.
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
+                      <Link href="/login">
+                        <Button className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold">
+                          <LogIn className="w-4 h-4 mr-2" />
+                          Sign In
+                        </Button>
+                      </Link>
+                      <Link href="/register">
+                        <Button variant="outline" className="border-gray-300">
+                          <UserPlus className="w-4 h-4 mr-2" />
+                          Create Account
+                        </Button>
+                      </Link>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
 
             <Card>
               <CardHeader>
@@ -232,7 +279,14 @@ export default function DonatePage() {
                 </div>
 
                 {/* Donate Button */}
-                {paymentMethod === "paypal" && getFinalAmount() ? (
+                {!isAuthenticated ? (
+                  <div className="text-center py-4">
+                    <p className="text-gray-500 mb-4">Sign in above to proceed with your donation</p>
+                    <Button disabled className="w-full opacity-50 cursor-not-allowed">
+                      Sign In Required to Donate
+                    </Button>
+                  </div>
+                ) : paymentMethod === "paypal" && getFinalAmount() ? (
                   <div className="w-full">
                     <div className="text-center mb-4">
                       <p className="text-lg font-semibold text-gray-700">
