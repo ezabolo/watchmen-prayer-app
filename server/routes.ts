@@ -306,6 +306,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.json({ user });
   });
 
+  // User enrolled trainings and progress endpoints
+  app.get("/api/me/enrolled-trainings", requireAuth, async (req, res) => {
+    try {
+      const user = req.user as any;
+      const trainings = await storage.getUserEnrolledTrainings(user.id);
+      res.json(trainings);
+    } catch (err: any) {
+      res.status(500).json({ message: err.message });
+    }
+  });
+
+  app.get("/api/me/progress", requireAuth, async (req, res) => {
+    try {
+      const user = req.user as any;
+      const progress = await storage.getUserProgress(user.id);
+      res.json(progress);
+    } catch (err: any) {
+      res.status(500).json({ message: err.message });
+    }
+  });
+
   app.get("/api/auth/verify-email/:token", async (req, res) => {
     try {
       const user = await storage.getUserByVerificationToken(req.params.token);

@@ -53,6 +53,7 @@ export interface IStorage {
   // Progress operations
   getProgress(userId: number, trainingId: number): Promise<Progress | undefined>;
   getUserProgress(userId: number): Promise<Progress[]>;
+  getUserEnrolledTrainings(userId: number): Promise<Training[]>;
   createProgress(progress: InsertProgress): Promise<Progress>;
   updateProgress(id: number, progress: Partial<Progress>): Promise<Progress>;
   
@@ -298,6 +299,18 @@ export class DatabaseStorage implements IStorage {
 
   async getUserProgress(userId: number): Promise<Progress[]> {
     return await db.select().from(progress).where(eq(progress.user_id, userId));
+  }
+
+  async getUserEnrolledTrainings(userId: number): Promise<Training[]> {
+    // Get trainings where user has progress records (enrolled trainings)
+    const userProgress = await db.select().from(progress).where(eq(progress.user_id, userId));
+    const trainingIds = userProgress.map(p => p.training_id);
+    
+    if (trainingIds.length === 0) {
+      return [];
+    }
+    
+    return await db.select().from(trainings).where(inArray(trainings.id, trainingIds));
   }
 
   async createProgress(progressData: InsertProgress): Promise<Progress> {
