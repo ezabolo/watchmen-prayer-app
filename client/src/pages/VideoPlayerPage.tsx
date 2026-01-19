@@ -178,9 +178,24 @@ export default function VideoPlayerPage() {
               <div className="w-full h-full">
                 {currentSection.video_url.includes('youtube.com') || currentSection.video_url.includes('youtu.be') ? (
                   <iframe
-                    src={currentSection.video_url}
+                    src={(() => {
+                      const url = currentSection.video_url;
+                      // Convert YouTube URLs to embed format
+                      if (url.includes('youtube.com/watch?v=')) {
+                        const videoId = url.split('v=')[1]?.split('&')[0];
+                        return `https://www.youtube.com/embed/${videoId}`;
+                      } else if (url.includes('youtube.com/shorts/')) {
+                        const videoId = url.split('shorts/')[1]?.split('?')[0];
+                        return `https://www.youtube.com/embed/${videoId}`;
+                      } else if (url.includes('youtu.be/')) {
+                        const videoId = url.split('youtu.be/')[1]?.split('?')[0];
+                        return `https://www.youtube.com/embed/${videoId}`;
+                      }
+                      return url;
+                    })()}
                     className="w-full h-full"
                     frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
                     title={currentSection.title}
                   />
