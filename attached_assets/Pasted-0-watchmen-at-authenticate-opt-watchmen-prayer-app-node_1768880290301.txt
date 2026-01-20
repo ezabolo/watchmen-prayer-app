@@ -1,0 +1,34 @@
+0|watchmen |     at authenticate (/opt/watchmen-prayer-app/node_modules/passport/lib/middleware/authenticate.js:379:7)
+0|watchmen |     at Layer.handle [as handle_request] (/opt/watchmen-prayer-app/node_modules/express/lib/router/layer.js:95:5)
+0|watchmen |     at next (/opt/watchmen-prayer-app/node_modules/express/lib/router/route.js:149:13)
+0|watchmen |     at Route.dispatch (/opt/watchmen-prayer-app/node_modules/express/lib/router/route.js:119:3)
+0|watchmen |     at Layer.handle [as handle_request] (/opt/watchmen-prayer-app/node_modules/express/lib/router/layer.js:95:5)
+0|watchmen |     at /opt/watchmen-prayer-app/node_modules/express/lib/router/index.js:284:15
+0|watchmen |     at Function.process_params (/opt/watchmen-prayer-app/node_modules/express/lib/router/index.js:346:12)
+0|watchmen |     at next (/opt/watchmen-prayer-app/node_modules/express/lib/router/index.js:280:10)
+0|watchmen |     at strategy.pass (/opt/watchmen-prayer-app/node_modules/passport/lib/middleware/authenticate.js:355:9)
+0|watchmen | Error: Unknown authentication strategy "google"
+0|watchmen |     at attempt (/opt/watchmen-prayer-app/node_modules/passport/lib/middleware/authenticate.js:193:39)
+0|watchmen |     at authenticate (/opt/watchmen-prayer-app/node_modules/passport/lib/middleware/authenticate.js:379:7)
+0|watchmen |     at Layer.handle [as handle_request] (/opt/watchmen-prayer-app/node_modules/express/lib/router/layer.js:95:5)
+0|watchmen |     at next (/opt/watchmen-prayer-app/node_modules/express/lib/router/route.js:149:13)
+0|watchmen |     at Route.dispatch (/opt/watchmen-prayer-app/node_modules/express/lib/router/route.js:119:3)
+0|watchmen |     at Layer.handle [as handle_request] (/opt/watchmen-prayer-app/node_modules/express/lib/router/layer.js:95:5)
+0|watchmen |     at /opt/watchmen-prayer-app/node_modules/express/lib/router/index.js:284:15
+0|watchmen |     at Function.process_params (/opt/watchmen-prayer-app/node_modules/express/lib/router/index.js:346:12)
+0|watchmen |     at next (/opt/watchmen-prayer-app/node_modules/express/lib/router/index.js:280:10)
+0|watchmen |     at strategy.pass (/opt/watchmen-prayer-app/node_modules/passport/lib/middleware/authenticate.js:355:9)
+0|watchmen | Error: connect ETIMEDOUT 172.26.5.78:443
+0|watchmen |     at file:///opt/watchmen-prayer-app/node_modules/@neondatabase/serverless/index.mjs:1345:74
+0|watchmen |     at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+0|watchmen |     at async NeonPreparedQuery.execute (file:///opt/watchmen-prayer-app/node_modules/drizzle-orm/neon-serverless/session.js:76:20)
+0|watchmen |     at async DatabaseStorage.getUserByEmail (file:///opt/watchmen-prayer-app/dist/index.js:439:20)
+0|watchmen |     at async Strategy._verify (file:///opt/watchmen-prayer-app/dist/index.js:958:22)
+0|watchmen | Error: connect ETIMEDOUT 172.26.5.78:443
+0|watchmen |     at file:///opt/watchmen-prayer-app/node_modules/@neondatabase/serverless/index.mjs:1345:74
+0|watchmen |     at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+0|watchmen |     at async NeonPreparedQuery.execute (file:///opt/watchmen-prayer-app/node_modules/drizzle-orm/neon-serverless/session.js:76:20)
+0|watchmen |     at async DatabaseStorage.getUserByEmail (file:///opt/watchmen-prayer-app/dist/index.js:439:20)
+0|watchmen |     at async Strategy._verify (file:///opt/watchmen-prayer-app/dist/index.js:958:22)
+0|watchmen | Error: connect ETIMEDOUT 172.26.5.78:443
+0|watc
