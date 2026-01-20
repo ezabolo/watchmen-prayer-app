@@ -23,7 +23,7 @@ if (isNeonDatabase) {
 } else {
   pool = new PgPool({ 
     connectionString: process.env.DATABASE_URL,
-    ssl: process.env.DATABASE_URL.includes('sslmode=require') ? { rejectUnauthorized: false } : false
+    ssl: { rejectUnauthorized: false }
   });
   db = drizzlePg({ client: pool as PgPool, schema });
 }
