@@ -282,17 +282,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get("/api/auth/google", passport.authenticate("google", { scope: ["profile", "email"] }));
-  
-  app.get("/api/auth/google/callback", passport.authenticate("google", { failureRedirect: "/login" }), (req, res) => {
-    res.redirect("/");
-  });
+  if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
+    app.get("/api/auth/google", passport.authenticate("google", { scope: ["profile", "email"] }));
+    
+    app.get("/api/auth/google/callback", passport.authenticate("google", { failureRedirect: "/login" }), (req, res) => {
+      res.redirect("/");
+    });
+  }
 
-  app.get("/api/auth/facebook", passport.authenticate("facebook", { scope: ["email"] }));
-  
-  app.get("/api/auth/facebook/callback", passport.authenticate("facebook", { failureRedirect: "/login" }), (req, res) => {
-    res.redirect("/");
-  });
+  if (process.env.FACEBOOK_APP_ID && process.env.FACEBOOK_APP_SECRET) {
+    app.get("/api/auth/facebook", passport.authenticate("facebook", { scope: ["email"] }));
+    
+    app.get("/api/auth/facebook/callback", passport.authenticate("facebook", { failureRedirect: "/login" }), (req, res) => {
+      res.redirect("/");
+    });
+  }
 
   app.post("/api/auth/logout", (req, res) => {
     req.logout((err) => {
