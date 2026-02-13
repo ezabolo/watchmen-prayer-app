@@ -2,7 +2,6 @@
 -- PostgreSQL database dump
 --
 
-\restrict uLQWzS1q3KtfQ0qy5fmT1BeXhNGbx8j1JNl6ConZSXX049T9IjLPE1rbdMOUnyM
 
 -- Dumped from database version 16.11 (df20cf9)
 -- Dumped by pg_dump version 16.10
@@ -1788,5 +1787,5 @@ ALTER TABLE ONLY public.trainings
 -- PostgreSQL database dump complete
 --
 
-\unrestrict uLQWzS1q3KtfQ0qy5fmT1BeXhNGbx8j1JNl6ConZSXX049T9IjLPE1rbdMOUnyM
+\unrestrict ySTdDfbsu9YpP9m9xsr7i4Jo7sRpcEX4k7MSixBTQkLAqkO7fDLMuTln1N0JBLg
 
