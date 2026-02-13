@@ -38,12 +38,14 @@ import crypto from "crypto";
 import speakeasy from "speakeasy";
 import QRCode from "qrcode";
 import Stripe from "stripe";
+import jwt from "jsonwebtoken";
 import { sendVerificationEmail } from "./emailService";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
 
 const stripe = process.env.STRIPE_SECRET_KEY ? new Stripe(process.env.STRIPE_SECRET_KEY) : null;
+const JWT_SECRET = process.env.SESSION_SECRET || "default-secret-change-in-production";
 
 const upload = multer({
   storage: multer.diskStorage({
@@ -195,15 +197,34 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  const authenticateJWT = async (req: any, res: any, next: any) => {
+    if (req.isAuthenticated()) return next();
+    const authHeader = req.headers.authorization;
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      const token = authHeader.split(' ')[1];
+      try {
+        const decoded = jwt.verify(token, JWT_SECRET) as any;
+        const user = await storage.getUser(decoded.userId);
+        if (user) {
+          req.user = user;
+          return next();
+        }
+      } catch (err) {}
+    }
+    next();
+  };
+
+  app.use(authenticateJWT);
+
   const requireAuth = (req: any, res: any, next: any) => {
-    if (!req.isAuthenticated()) {
+    if (!req.user) {
       return res.status(401).json({ message: "Unauthorized" });
     }
     next();
   };
 
   const requireAdmin = (req: any, res: any, next: any) => {
-    if (!req.isAuthenticated() || req.user?.role !== "admin") {
+    if (!req.user || req.user?.role !== "admin") {
       return res.status(403).json({ message: "Admin access required" });
     }
     next();
@@ -247,7 +268,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       req.logIn(user, async (err) => {
         if (err) return next(err);
         await storage.updateUser(user.id, { last_login: new Date() });
-        res.json({ user: { ...user, password: undefined } });
+        const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '24h' });
+        res.json({ user: { ...user, password: undefined }, token });
       });
     })(req, res, next);
   });
@@ -275,7 +297,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       req.logIn(user, async (err) => {
         if (err) return res.status(500).json({ message: err.message });
         await storage.updateUser(user.id, { last_login: new Date() });
-        res.json({ user: { ...user, password: undefined, two_factor_secret: undefined, backup_codes: undefined } });
+        const jwtToken = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '24h' });
+        res.json({ user: { ...user, password: undefined, two_factor_secret: undefined, backup_codes: undefined }, token: jwtToken });
       });
     } catch (err: any) {
       res.status(500).json({ message: err.message });

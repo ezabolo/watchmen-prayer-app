@@ -20,42 +20,40 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const queryClient = useQueryClient();
   const [, setLocation] = useLocation();
   
-  const { data: user, isLoading, refetch } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ['/api/auth/me'],
     retry: false,
   });
 
+  const extractedUser = data && typeof data === 'object' 
+    ? (data as any).user || data 
+    : null;
+
   const logout = async () => {
-    console.log('Logout function called');
     try {
-      // Call logout endpoint (session-based)
+      const token = localStorage.getItem('token');
+      const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+      
       await fetch('/api/auth/logout', { 
         method: 'POST',
         credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        }
+        headers,
       });
     } catch (error) {
       console.error('Logout error:', error);
     } finally {
-      // Clear authentication state
-      console.log('Clearing authentication state...');
       localStorage.removeItem('token');
-      
-      // Clear all React Query cache
       queryClient.clear();
       queryClient.removeQueries();
-      
-      // Force a hard redirect to ensure clean state
       window.location.href = '/';
     }
   };
 
   const value: AuthContextType = {
-    user: user && typeof user === 'object' ? user as User : null,
+    user: extractedUser && typeof extractedUser === 'object' && extractedUser.id ? extractedUser as User : null,
     isLoading,
-    isAuthenticated: !!user && typeof user === 'object',
+    isAuthenticated: !!extractedUser && typeof extractedUser === 'object' && !!extractedUser.id,
     logout,
   };
 
