@@ -4,7 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BookOpen, PlayCircle, CheckCircle2, Clock, Trophy } from "lucide-react";
+import { BookOpen, PlayCircle, CheckCircle2, Clock, Trophy, Heart } from "lucide-react";
 import { Link } from "wouter";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -38,9 +38,17 @@ export default function WatchmanDashboard() {
   return (
     <div className="space-y-6">
       {/* Welcome Header */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-700 text-white p-6 rounded-lg">
-        <h1 className="text-2xl font-bold mb-2">Welcome back, {user?.name}!</h1>
-        <p className="text-blue-100">Continue your journey as a Prayer Watchman</p>
+      <div className="bg-gradient-to-r from-blue-600 to-purple-700 text-white p-6 rounded-lg flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold mb-2">Welcome back, {user?.name}!</h1>
+          <p className="text-blue-100">Continue your journey as a Prayer Watchman</p>
+        </div>
+        <Link href="/donate">
+          <Button className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold shadow-lg">
+            <Heart className="w-4 h-4 mr-2" />
+            Make a Donation
+          </Button>
+        </Link>
       </div>
 
       {/* Stats Cards */}
