@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import purpleTextureImagePath from "@assets/image_1749701291052.png";
+import heroVideoPath from "@assets/Watchmen_main_video_1771034870052.mp4";
 
 export default function Hero() {
   return (
@@ -29,22 +30,24 @@ export default function Hero() {
           zIndex: 1
         }}
       >
-        <iframe
-          src="https://www.youtube.com/embed/0PT6S_qNKk4?autoplay=1&mute=1&loop=1&playlist=0PT6S_qNKk4&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1"
+        <video
+          src={heroVideoPath}
+          autoPlay
+          muted
+          loop
+          playsInline
           style={{ 
             position: 'absolute',
             top: '50%',
             left: '50%',
-            width: '100%',
-            height: '100%',
+            minWidth: '100%',
+            minHeight: '100%',
+            width: 'auto',
+            height: 'auto',
             transform: 'translate(-50%, -50%)',
             pointerEvents: 'none',
-            border: 'none',
-            outline: 'none'
+            objectFit: 'cover'
           }}
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
         />
       </div>
 
