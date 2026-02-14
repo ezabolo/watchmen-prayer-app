@@ -47,13 +47,16 @@ export default function DonatePage() {
     setIsProcessing(true);
 
     try {
+      const token = localStorage.getItem('token');
+      const authHeaders: Record<string, string> = { "Content-Type": "application/json" };
+      if (token) authHeaders["Authorization"] = `Bearer ${token}`;
+
       if (paymentMethod === "stripe") {
         // Handle Stripe payment
         const response = await fetch("/api/create-payment-intent", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: authHeaders,
+          credentials: "include",
           body: JSON.stringify({
             amount: parseFloat(finalAmount),
           }),
@@ -61,9 +64,7 @@ export default function DonatePage() {
 
         if (response.ok) {
           const { clientSecret } = await response.json();
-          // Add cache busting parameter to ensure fresh load
           const timestamp = Date.now();
-          // Redirect to Stripe checkout
           window.location.href = `/stripe-checkout?client_secret=${clientSecret}&amount=${finalAmount}&t=${timestamp}`;
         } else {
           throw new Error("Failed to create payment intent");
@@ -72,9 +73,8 @@ export default function DonatePage() {
         // Handle PayPal payment
         const response = await fetch("/api/paypal/order", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: authHeaders,
+          credentials: "include",
           body: JSON.stringify({
             amount: finalAmount,
             currency: "USD",

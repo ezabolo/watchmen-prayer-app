@@ -21,9 +21,14 @@ export default function PayPalButton({
     
     try {
       // Create PayPal order
+      const token = localStorage.getItem('token');
+      const headers: Record<string, string> = { "Content-Type": "application/json" };
+      if (token) headers["Authorization"] = `Bearer ${token}`;
+      
       const response = await fetch("/api/paypal/order", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers,
+        credentials: "include",
         body: JSON.stringify({
           amount: amount,
           currency: currency,

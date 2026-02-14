@@ -863,6 +863,69 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.post("/api/paypal/order", requireAuth, async (req, res) => {
+    try {
+      const clientId = process.env.PAYPAL_CLIENT_ID;
+      const clientSecret = process.env.PAYPAL_CLIENT_SECRET;
+      
+      if (!clientId || !clientSecret) {
+        return res.json({ demo: true, message: "PayPal not configured" });
+      }
+
+      const { amount, currency = "USD", intent = "CAPTURE" } = req.body;
+      const baseUrl = process.env.NODE_ENV === "production" 
+        ? "https://api-m.paypal.com" 
+        : "https://api-m.sandbox.paypal.com";
+
+      const authResponse = await fetch(`${baseUrl}/v1/oauth2/token`, {
+        method: "POST",
+        headers: {
+          "Authorization": `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString("base64")}`,
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: "grant_type=client_credentials",
+      });
+
+      if (!authResponse.ok) {
+        throw new Error("Failed to authenticate with PayPal");
+      }
+
+      const { access_token } = await authResponse.json() as any;
+
+      const orderResponse = await fetch(`${baseUrl}/v2/checkout/orders`, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${access_token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          intent,
+          purchase_units: [{
+            amount: {
+              currency_code: currency,
+              value: String(amount),
+            },
+            description: "Watchmen Nations Prayer Donation",
+          }],
+          application_context: {
+            return_url: `${req.protocol}://${req.get('host')}/donate/success`,
+            cancel_url: `${req.protocol}://${req.get('host')}/donate`,
+          },
+        }),
+      });
+
+      if (!orderResponse.ok) {
+        throw new Error("Failed to create PayPal order");
+      }
+
+      const orderData = await orderResponse.json();
+      res.json(orderData);
+    } catch (err: any) {
+      console.error("PayPal order error:", err);
+      res.status(500).json({ message: err.message });
+    }
+  });
+
   app.post("/api/create-payment-intent", requireAuth, async (req, res) => {
     try {
       if (!stripe) {
