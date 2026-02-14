@@ -472,6 +472,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.post("/api/trainings/:id/enroll", requireAuth, async (req, res) => {
+    try {
+      const user = req.user as any;
+      const trainingId = parseInt(req.params.id);
+      const training = await storage.getTraining(trainingId);
+      if (!training) {
+        return res.status(404).json({ message: "Training not found" });
+      }
+      const existing = await storage.getProgress(user.id, trainingId);
+      if (existing) {
+        return res.json({ message: "Already enrolled", progress: existing });
+      }
+      const progressEntry = await storage.createProgress({
+        user_id: user.id,
+        training_id: trainingId,
+        completed: false,
+        score: 0,
+      });
+      res.json({ message: "Enrolled successfully", progress: progressEntry });
+    } catch (err: any) {
+      res.status(500).json({ message: err.message });
+    }
+  });
+
   app.post("/api/trainings", requireAdmin, async (req, res) => {
     try {
       const parsed = insertTrainingSchema.safeParse(req.body);
