@@ -33,9 +33,14 @@ export default function DonateSuccessPage() {
     setCaptureError('');
     
     try {
+      const token = localStorage.getItem('token');
+      const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+      
       const response = await fetch(`/api/paypal/order/${orderId}/capture`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' }
+        headers,
+        credentials: 'include',
       });
       
       if (!response.ok) {

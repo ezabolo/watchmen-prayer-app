@@ -926,6 +926,74 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.post("/api/paypal/order/:orderId/capture", requireAuth, async (req, res) => {
+    try {
+      const clientId = process.env.PAYPAL_CLIENT_ID;
+      const clientSecret = process.env.PAYPAL_CLIENT_SECRET;
+      
+      if (!clientId || !clientSecret) {
+        return res.status(500).json({ message: "PayPal not configured" });
+      }
+
+      const { orderId } = req.params;
+      const baseUrl = process.env.NODE_ENV === "production" 
+        ? "https://api-m.paypal.com" 
+        : "https://api-m.sandbox.paypal.com";
+
+      const authResponse = await fetch(`${baseUrl}/v1/oauth2/token`, {
+        method: "POST",
+        headers: {
+          "Authorization": `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString("base64")}`,
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: "grant_type=client_credentials",
+      });
+
+      if (!authResponse.ok) {
+        throw new Error("Failed to authenticate with PayPal");
+      }
+
+      const { access_token } = await authResponse.json() as any;
+
+      const captureResponse = await fetch(`${baseUrl}/v2/checkout/orders/${orderId}/capture`, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${access_token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!captureResponse.ok) {
+        const errorData = await captureResponse.json() as any;
+        throw new Error(errorData.message || "Failed to capture PayPal payment");
+      }
+
+      const captureData = await captureResponse.json();
+
+      const user = req.user as any;
+      try {
+        const captureAmount = (captureData as any).purchase_units?.[0]?.payments?.captures?.[0]?.amount?.value;
+        if (captureAmount) {
+          await storage.createDonation({
+            user_id: user.id,
+            amount: captureAmount,
+            currency: "USD",
+            payment_method: "paypal",
+            payment_id: orderId,
+            status: "completed",
+          });
+        }
+      } catch (donationErr) {
+        console.error("Failed to record donation:", donationErr);
+      }
+
+      res.json(captureData);
+    } catch (err: any) {
+      console.error("PayPal capture error:", err);
+      res.status(500).json({ message: err.message });
+    }
+  });
+
   app.post("/api/create-payment-intent", requireAuth, async (req, res) => {
     try {
       if (!stripe) {
