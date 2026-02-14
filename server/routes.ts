@@ -1005,7 +1005,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/admin/users/toggle", requireAdmin, async (req, res) => {
+  app.post("/api/admin/users/toggle-status", requireAdmin, async (req, res) => {
     try {
       const parsed = adminToggleUserSchema.safeParse(req.body);
       if (!parsed.success) {
@@ -1018,7 +1018,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/admin/users/role", requireAdmin, async (req, res) => {
+  app.post("/api/admin/users/update-role", requireAdmin, async (req, res) => {
     try {
       const parsed = adminUpdateUserRoleSchema.safeParse(req.body);
       if (!parsed.success) {
