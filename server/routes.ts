@@ -755,9 +755,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/books", requireAdmin, async (req, res) => {
+  app.post("/api/books", requireAdmin, upload.fields([
+    { name: 'front_cover', maxCount: 1 },
+    { name: 'back_cover', maxCount: 1 }
+  ]), async (req, res) => {
     try {
-      const parsed = insertBookSchema.safeParse(req.body);
+      const files = req.files as { [fieldname: string]: Express.Multer.File[] } | undefined;
+      const bookData: any = { ...req.body };
+
+      if (files?.front_cover?.[0]) {
+        bookData.front_cover_url = `/uploads/${files.front_cover[0].filename}`;
+      }
+      if (files?.back_cover?.[0]) {
+        bookData.back_cover_url = `/uploads/${files.back_cover[0].filename}`;
+      }
+
+      if (bookData.price) bookData.price = parseFloat(bookData.price);
+      if (bookData.stock_quantity) bookData.stock_quantity = parseInt(bookData.stock_quantity);
+      if (bookData.is_featured === 'true') bookData.is_featured = true;
+      else if (bookData.is_featured === 'false') bookData.is_featured = false;
+
+      const parsed = insertBookSchema.safeParse(bookData);
       if (!parsed.success) {
         return res.status(400).json({ message: parsed.error.errors[0].message });
       }
@@ -768,9 +786,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.patch("/api/books/:id", requireAdmin, async (req, res) => {
+  app.patch("/api/books/:id", requireAdmin, upload.fields([
+    { name: 'front_cover', maxCount: 1 },
+    { name: 'back_cover', maxCount: 1 }
+  ]), async (req, res) => {
     try {
-      const book = await storage.updateBook(parseInt(req.params.id), req.body);
+      const files = req.files as { [fieldname: string]: Express.Multer.File[] } | undefined;
+      const updateData: any = { ...req.body };
+
+      if (files?.front_cover?.[0]) {
+        updateData.front_cover_url = `/uploads/${files.front_cover[0].filename}`;
+      }
+      if (files?.back_cover?.[0]) {
+        updateData.back_cover_url = `/uploads/${files.back_cover[0].filename}`;
+      }
+
+      if (updateData.price) updateData.price = parseFloat(updateData.price);
+      if (updateData.stock_quantity) updateData.stock_quantity = parseInt(updateData.stock_quantity);
+      if (updateData.is_featured === 'true') updateData.is_featured = true;
+      else if (updateData.is_featured === 'false') updateData.is_featured = false;
+
+      const book = await storage.updateBook(parseInt(req.params.id), updateData);
       res.json(book);
     } catch (err: any) {
       res.status(500).json({ message: err.message });
