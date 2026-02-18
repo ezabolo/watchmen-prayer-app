@@ -1,3 +1,4 @@
+import express from "express";
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
@@ -1169,8 +1170,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.use("/uploads", (req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Cache-Control", "public, max-age=31536000");
     next();
-  });
+  }, express.static(path.resolve("uploads")));
 
   app.get("/api/admin/users", requireAdmin, async (req, res) => {
     try {
