@@ -635,7 +635,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.patch("/api/events/:id", requireAdmin, async (req, res) => {
     try {
-      const event = await storage.updateEvent(parseInt(req.params.id), req.body);
+      const data = { ...req.body };
+      if (data.start_date && typeof data.start_date === 'string') {
+        data.start_date = new Date(data.start_date);
+      }
+      if (data.end_date && typeof data.end_date === 'string') {
+        data.end_date = new Date(data.end_date);
+      }
+      const event = await storage.updateEvent(parseInt(req.params.id), data);
       res.json(event);
     } catch (err: any) {
       res.status(500).json({ message: err.message });
@@ -644,7 +651,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.put("/api/events/:id", requireAdmin, async (req, res) => {
     try {
-      const event = await storage.updateEvent(parseInt(req.params.id), req.body);
+      const data = { ...req.body };
+      if (data.start_date && typeof data.start_date === 'string') {
+        data.start_date = new Date(data.start_date);
+      }
+      if (data.end_date && typeof data.end_date === 'string') {
+        data.end_date = new Date(data.end_date);
+      }
+      const event = await storage.updateEvent(parseInt(req.params.id), data);
       res.json(event);
     } catch (err: any) {
       res.status(500).json({ message: err.message });
