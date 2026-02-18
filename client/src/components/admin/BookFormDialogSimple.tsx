@@ -54,12 +54,13 @@ export default function BookFormDialogSimple({ open, onOpenChange, book }: BookF
       try {
         const formDataToSend = new FormData();
         
-        // Add all form fields
         Object.keys(data).forEach(key => {
-          formDataToSend.append(key, data[key]);
+          const val = data[key];
+          if (val !== undefined && val !== null && val !== '') {
+            formDataToSend.append(key, String(val));
+          }
         });
         
-        // Add files if selected
         if (selectedFrontCover) {
           formDataToSend.append('front_cover', selectedFrontCover);
         }
@@ -73,6 +74,7 @@ export default function BookFormDialogSimple({ open, onOpenChange, book }: BookF
         
         const response = await fetch(url, {
           method,
+          credentials: 'include',
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },

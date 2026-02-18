@@ -755,31 +755,66 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  const cleanBookFormData = (body: any, files?: { [fieldname: string]: Express.Multer.File[] }) => {
+    const data: any = {};
+
+    if (body.title && body.title.trim()) data.title = body.title.trim();
+    if (body.author && body.author.trim()) data.author = body.author.trim();
+    if (body.description && body.description.trim()) data.description = body.description.trim();
+    if (body.price) data.price = parseFloat(body.price);
+    if (body.amazon_url && body.amazon_url.trim()) data.amazon_url = body.amazon_url.trim();
+    if (body.isbn && body.isbn.trim()) data.isbn = body.isbn.trim();
+    if (body.category && body.category.trim()) data.category = body.category.trim();
+    if (body.publisher && body.publisher.trim()) data.publisher = body.publisher.trim();
+    if (body.language && body.language.trim()) data.language = body.language.trim();
+    if (body.pages) data.pages = parseInt(body.pages);
+    if (body.stock_quantity !== undefined && body.stock_quantity !== '') data.stock_quantity = parseInt(body.stock_quantity) || 0;
+    if (body.is_featured === true || body.is_featured === 'true') data.is_featured = true;
+    else data.is_featured = false;
+
+    if (files?.front_cover?.[0]) {
+      data.front_cover_url = `/uploads/${files.front_cover[0].filename}`;
+    } else if (body.front_cover_url && body.front_cover_url.trim()) {
+      data.front_cover_url = body.front_cover_url.trim();
+    }
+    if (files?.back_cover?.[0]) {
+      data.back_cover_url = `/uploads/${files.back_cover[0].filename}`;
+    } else if (body.back_cover_url && body.back_cover_url.trim()) {
+      data.back_cover_url = body.back_cover_url.trim();
+    }
+
+    return data;
+  };
+
   app.post("/api/books", requireAdmin, upload.fields([
     { name: 'front_cover', maxCount: 1 },
     { name: 'back_cover', maxCount: 1 }
   ]), async (req, res) => {
     try {
       const files = req.files as { [fieldname: string]: Express.Multer.File[] } | undefined;
-      const bookData: any = { ...req.body };
-
-      if (files?.front_cover?.[0]) {
-        bookData.front_cover_url = `/uploads/${files.front_cover[0].filename}`;
-      }
-      if (files?.back_cover?.[0]) {
-        bookData.back_cover_url = `/uploads/${files.back_cover[0].filename}`;
-      }
-
-      if (bookData.price) bookData.price = parseFloat(bookData.price);
-      if (bookData.stock_quantity) bookData.stock_quantity = parseInt(bookData.stock_quantity);
-      if (bookData.is_featured === 'true') bookData.is_featured = true;
-      else if (bookData.is_featured === 'false') bookData.is_featured = false;
+      const bookData = cleanBookFormData(req.body, files);
 
       const parsed = insertBookSchema.safeParse(bookData);
       if (!parsed.success) {
-        return res.status(400).json({ message: parsed.error.errors[0].message });
+        const errors = parsed.error.errors.map(e => `${e.path.join('.')}: ${e.message}`).join(', ');
+        return res.status(400).json({ message: errors });
       }
       const book = await storage.createBook({ ...parsed.data, created_by: (req.user as any).id });
+      res.json(book);
+    } catch (err: any) {
+      res.status(500).json({ message: err.message });
+    }
+  });
+
+  app.put("/api/books/:id", requireAdmin, upload.fields([
+    { name: 'front_cover', maxCount: 1 },
+    { name: 'back_cover', maxCount: 1 }
+  ]), async (req, res) => {
+    try {
+      const files = req.files as { [fieldname: string]: Express.Multer.File[] } | undefined;
+      const updateData = cleanBookFormData(req.body, files);
+
+      const book = await storage.updateBook(parseInt(req.params.id), updateData);
       res.json(book);
     } catch (err: any) {
       res.status(500).json({ message: err.message });
@@ -792,19 +827,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   ]), async (req, res) => {
     try {
       const files = req.files as { [fieldname: string]: Express.Multer.File[] } | undefined;
-      const updateData: any = { ...req.body };
-
-      if (files?.front_cover?.[0]) {
-        updateData.front_cover_url = `/uploads/${files.front_cover[0].filename}`;
-      }
-      if (files?.back_cover?.[0]) {
-        updateData.back_cover_url = `/uploads/${files.back_cover[0].filename}`;
-      }
-
-      if (updateData.price) updateData.price = parseFloat(updateData.price);
-      if (updateData.stock_quantity) updateData.stock_quantity = parseInt(updateData.stock_quantity);
-      if (updateData.is_featured === 'true') updateData.is_featured = true;
-      else if (updateData.is_featured === 'false') updateData.is_featured = false;
+      const updateData = cleanBookFormData(req.body, files);
 
       const book = await storage.updateBook(parseInt(req.params.id), updateData);
       res.json(book);
