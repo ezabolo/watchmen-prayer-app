@@ -11,7 +11,8 @@ import {
   Settings,
   Menu,
   X,
-  LogOut
+  LogOut,
+  ShoppingBag
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -48,6 +49,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         { name: 'Prayer Events', href: '/dashboard/events', icon: Calendar },
         { name: 'Prayer Requests', href: '/dashboard/requests', icon: MessageSquare },
         { name: 'Training Content', href: '/dashboard/training', icon: Book },
+        { name: 'Manage Books', href: '/dashboard/books', icon: ShoppingBag },
         { name: 'Reports', href: '/dashboard/reports', icon: BarChart },
         { name: 'Settings', href: '/admin/settings', icon: Settings },
       ];

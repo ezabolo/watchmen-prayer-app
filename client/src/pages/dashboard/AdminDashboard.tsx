@@ -2,13 +2,25 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CalendarDays, BookOpen, Users, BarChart3, Plus, Edit, Book, ShoppingCart, Settings } from "lucide-react";
+import { CalendarDays, BookOpen, Users, BarChart3, Plus, Edit, Trash2, Book, ShoppingCart, Settings } from "lucide-react";
 import { Link } from "wouter";
 import EventFormDialog from "@/components/admin/EventFormDialog";
 import StructuredTrainingDialog from "@/components/admin/StructuredTrainingDialog";
 import BookFormDialogSimple from "@/components/admin/BookFormDialogSimple";
 import AdminProjectsPage from "@/pages/admin/AdminProjectsPage";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useToast } from "@/hooks/use-toast";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export default function AdminDashboard() {
   const [eventFormOpen, setEventFormOpen] = useState(false);
@@ -17,6 +29,8 @@ export default function AdminDashboard() {
   const [editingEvent, setEditingEvent] = useState<any>(null);
   const [editingBook, setEditingBook] = useState<any>(null);
   const [editingTraining, setEditingTraining] = useState<any>(null);
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
 
   const { data: events = [] } = useQuery({
     queryKey: ['/api/events'],
@@ -67,6 +81,25 @@ export default function AdminDashboard() {
     setTrainingFormOpen(false);
     setEditingTraining(null);
   };
+
+  const deleteBookMutation = useMutation({
+    mutationFn: async (bookId: number) => {
+      const response = await fetch(`/api/books/${bookId}`, {
+        method: 'DELETE',
+        credentials: 'include',
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+      });
+      if (!response.ok) throw new Error('Failed to delete book');
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/books'] });
+      toast({ title: "Success", description: "Book deleted successfully" });
+    },
+    onError: () => {
+      toast({ title: "Error", description: "Failed to delete book", variant: "destructive" });
+    },
+  });
 
   const stats = [
     {
@@ -308,15 +341,46 @@ export default function AdminDashboard() {
                       <CardTitle className="text-lg">{book.title}</CardTitle>
                       <CardDescription>by {book.author}</CardDescription>
                     </div>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleEditBook(book)}
-                      className="h-8 w-8 p-0 bg-blue-50 hover:bg-blue-100 border-blue-200"
-                      title="Edit Book"
-                    >
-                      <Edit className="h-4 w-4 text-blue-600" />
-                    </Button>
+                    <div className="flex gap-1 ml-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleEditBook(book)}
+                        className="h-8 w-8 p-0 bg-blue-50 hover:bg-blue-100 border-blue-200"
+                        title="Edit Book"
+                      >
+                        <Edit className="h-4 w-4 text-blue-600" />
+                      </Button>
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
+                            title="Delete Book"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Delete Book</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              Are you sure you want to delete "{book.title}"? This action cannot be undone.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction
+                              onClick={() => deleteBookMutation.mutate(book.id)}
+                              className="bg-red-600 hover:bg-red-700"
+                            >
+                              Delete
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    </div>
                   </div>
                 </CardHeader>
                 <CardContent>

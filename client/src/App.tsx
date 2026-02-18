@@ -34,6 +34,7 @@ import AdminUsersPage from "@/pages/dashboard/AdminUsersPage";
 import AdminEventsPage from "@/pages/dashboard/AdminEventsPage";
 import AdminTrainingPage from "@/pages/dashboard/AdminTrainingPage";
 import AdminRequestsPage from "@/pages/dashboard/AdminRequestsPage";
+import AdminBooksPage from "@/pages/dashboard/AdminBooksPage";
 import AdminSettingsPage from "@/pages/AdminSettingsPage";
 import ProjectsPage from "@/pages/ProjectsPage";
 import { useAuth } from "./hooks/useAuth";
@@ -174,6 +175,11 @@ function Router() {
       <Route path="/dashboard/training" component={() => (
         <DashboardLayout>
           {user?.role === 'admin' ? <AdminTrainingPage /> : <WatchmanDashboard />}
+        </DashboardLayout>
+      )} />
+      <Route path="/dashboard/books" component={() => (
+        <DashboardLayout>
+          {user?.role === 'admin' ? <AdminBooksPage /> : <WatchmanDashboard />}
         </DashboardLayout>
       )} />
       <Route path="/dashboard/reports" component={() => (
