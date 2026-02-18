@@ -519,6 +519,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.put("/api/trainings/:id", requireAdmin, async (req, res) => {
+    try {
+      const training = await storage.updateTraining(parseInt(req.params.id), req.body);
+      res.json(training);
+    } catch (err: any) {
+      res.status(500).json({ message: err.message });
+    }
+  });
+
   app.delete("/api/trainings/:id", requireAdmin, async (req, res) => {
     try {
       await storage.deleteTraining(parseInt(req.params.id));
@@ -599,6 +608,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   app.patch("/api/events/:id", requireAdmin, async (req, res) => {
+    try {
+      const event = await storage.updateEvent(parseInt(req.params.id), req.body);
+      res.json(event);
+    } catch (err: any) {
+      res.status(500).json({ message: err.message });
+    }
+  });
+
+  app.put("/api/events/:id", requireAdmin, async (req, res) => {
     try {
       const event = await storage.updateEvent(parseInt(req.params.id), req.body);
       res.json(event);
