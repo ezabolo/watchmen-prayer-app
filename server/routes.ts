@@ -573,6 +573,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.post("/api/trainings/:id/progress", requireAuth, async (req, res) => {
+    try {
+      const trainingId = parseInt(req.params.id);
+      const userId = (req.user as any).id;
+      const progressData = {
+        user_id: userId,
+        training_id: trainingId,
+        completed: req.body.completed || false,
+        score: req.body.score || 0,
+      };
+      const parsed = insertProgressSchema.safeParse(progressData);
+      if (!parsed.success) {
+        return res.status(400).json({ message: parsed.error.errors[0].message });
+      }
+      const existing = await storage.getProgress(userId, trainingId);
+      if (existing) {
+        const updated = await storage.updateProgress(existing.id, parsed.data);
+        return res.json(updated);
+      }
+      const progress = await storage.createProgress(parsed.data);
+      res.json(progress);
+    } catch (err: any) {
+      res.status(500).json({ message: err.message });
+    }
+  });
+
   app.get("/api/events", async (req, res) => {
     try {
       const events = await storage.getEvents();
