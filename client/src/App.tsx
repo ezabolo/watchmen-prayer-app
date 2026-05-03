@@ -37,6 +37,9 @@ import AdminRequestsPage from "@/pages/dashboard/AdminRequestsPage";
 import AdminBooksPage from "@/pages/dashboard/AdminBooksPage";
 import AdminSettingsPage from "@/pages/AdminSettingsPage";
 import ProjectsPage from "@/pages/ProjectsPage";
+import VerifyEmailPage from "@/pages/VerifyEmailPage";
+import ForgotPasswordPage from "@/pages/ForgotPasswordPage";
+import ResetPasswordPage from "@/pages/ResetPasswordPage";
 import { useAuth } from "./hooks/useAuth";
 
 function Router() {
@@ -59,6 +62,24 @@ function Router() {
       <Route path="/register" component={() => (
         <RootLayout>
           <RegisterPage />
+        </RootLayout>
+      )} />
+
+      <Route path="/verify-email" component={() => (
+        <RootLayout>
+          <VerifyEmailPage />
+        </RootLayout>
+      )} />
+
+      <Route path="/forgot-password" component={() => (
+        <RootLayout>
+          <ForgotPasswordPage />
+        </RootLayout>
+      )} />
+
+      <Route path="/reset-password" component={() => (
+        <RootLayout>
+          <ResetPasswordPage />
         </RootLayout>
       )} />
       

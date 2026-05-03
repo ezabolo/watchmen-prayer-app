@@ -12,6 +12,21 @@ A comprehensive humanitarian digital learning platform that empowers spiritual g
 - **Deployment**: Replit hosting
 
 ## Recent Changes
+### May 3, 2026 - Email Verification & Password Reset System
+✓ Email verification now sent on registration via SendGrid (sendAccountVerificationEmail)
+✓ Login blocked for unverified accounts — users must click their email link first
+✓ New /verify-email page handles clicking the link from email (success/expired/error states)
+✓ New /forgot-password page — users enter email to receive a reset link
+✓ New /reset-password page — users set a new password from the email link
+✓ Resend verification endpoint: POST /api/auth/resend-verification
+✓ Forgot password endpoint: POST /api/auth/forgot-password (1hr expiry token)
+✓ Reset password endpoint: POST /api/auth/reset-password
+✓ Social login callbacks (Google, Facebook) now generate JWT and redirect to /login?token=... so the frontend stores it correctly
+✓ "Forgot your password?" link added to LoginPage
+✓ All 8 existing users migrated to email_verified=true so they aren't locked out
+✓ password_reset_token and password_reset_expires columns added to users table
+✓ emailService.ts refactored: graceful no-op when SENDGRID_API_KEY is missing, dynamic base URL (APP_URL env var or REPLIT_DOMAINS)
+
 ### August 27, 2025 - Security & Navigation Fixes
 ✓ Fixed critical security issue where partners had access to admin features
 ✓ Implemented proper role-based navigation in DashboardLayout  
